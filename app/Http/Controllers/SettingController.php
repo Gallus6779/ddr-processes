@@ -18,7 +18,7 @@ class SettingController extends Controller
      * 
      */
     public function discount_list(){
-
+        return view('admin.discounts.list');
     }
 
     /**
