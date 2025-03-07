@@ -49,71 +49,59 @@
                 </div>      
             @endif
         </div>
-        <div class="col-6"></div>
-        <div class="col-6">
+        <div class="col-12 mt-3">
             @permission('settings.discounts.create')
-                <a href="#" class="mt-3 mb-3 btn btn-primary float-right" data-toggle="modal" data-target="#modal-default">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">{{ __('Calcultation of Discount')}}</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form>
+                    <div class="card-body row">
+                        <div class="form-group col-md-4">
+                            <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                            <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
+                                @foreach ($districts as $district)
+                                {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
+                                <option value="" >{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                            <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
+                                @foreach ($districts as $district)
+                                {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
+                                <option value="" >{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                            <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
+                                @foreach ($districts as $district)
+                                {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
+                                <option value="" >{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+    
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary float-right">
+                            {{ __('Calculate a discount') }}
+                        </button>
+                    </div>
+                    </form>
+                </div>
+              <!-- /.card -->
+                {{-- <a href="#" class="mt-3 mb-3 btn btn-primary float-right" data-toggle="modal" data-target="#modal-default">
                     <i class="fas fa-plus mr-1"></i>
                     {{ __('Create a period') }}
-                </a>
-                <div class="modal fade" id="modal-default">
-                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">{{ __('Create a period') }}</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form method="post" action="{{ route('settings.discounts.create')}}">
-                                @csrf
-                                <div class="modal-body card-body row">
-                                    <div class="form-group col-md-6">
-                                        <label for="name">{{ __('Name') }} </label>
-                                        <input id="name" class="form-control" type="text" name="name">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>District</label>
-                                        <select class="form-control" style="width: 100%;">
-                                            <option>LOSO</option>
-                                            <option>DCSE</option>
-                                            <option>Ngaoundere</option>
-                                        </select>
-                                    </div>
-                                    <!-- Date -->
-                                    <div class="form-group col-md-6">
-                                        <label for="start_date">{{ __('Start date') }} </label>
-                                        <input type="date" class="form-control" name="start_date" id="start_date"/>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="end_date">{{ __('End date') }} </label>
-                                        <input type="date" class="form-control" name="end_date" id="end_date"/>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <label for="description">Description</label>
-                                        <textarea id="description" class="form-control" name="description" rows="3"></textarea>
-                                    </div>
-                                    <!-- /.form-group -->
-                                </div>
-                                <div class="modal-footer justify-content-between">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">
-                                        <ion-icon name="close-circle-outline"></ion-icon>
-                                        <i class="fas-solid fa-xmark"></i>
-                                        <i class="fass fa-xmark"></i>
-                                        {{ __('Cancel') }} 
-                                    </button>
-                                    <button type="button" class="btn btn-primary">
-                                        <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
-                                        {{ __('Save') }} 
-                                    </button>
-                                </div>
-                            </form>
-
-                        </div>
-                        <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                </div>
+                </a> --}}
             @endpermission
         </div>
     </div>
@@ -123,15 +111,18 @@
           
         <div class="card">
             <div class="card-header">
-              <h3 class="card-title">{{ __('Discount Period') }}  </h3>
+              <h3 class="card-title">{{ __('Customers Discounts') }}  </h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>{{ __('Name') }} </th>
-                        <th> {{ __('Period') }}</th>
+                        <th>{{ __('CustomerName') }} </th>
+                        <th>{{ __('CadrNumber') }} </th>
+                        <th>{{ __('Quantity') }} </th>
+                        <th>{{ __('Amount') }} </th>
+                        <th> {{ __('Discount Period') }}</th>
                         <th>{{ __('District') }}</th>
                         <th>{{ __('Created By') }} </th>
                         <th>{{ __('Validated By') }} </th>
@@ -220,8 +211,11 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>{{ __('Name') }} </th>
-                        <th> {{ __('Period') }}</th>
+                        <th>{{ __('CustomerName') }} </th>
+                        <th>{{ __('CadrNumber') }} </th>
+                        <th>{{ __('Quantity') }} </th>
+                        <th>{{ __('Amount') }} </th>
+                        <th> {{ __('Discount Period') }}</th>
                         <th>{{ __('District') }}</th>
                         <th>{{ __('Created By') }} </th>
                         <th>{{ __('Validated By') }} </th>

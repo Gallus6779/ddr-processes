@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Discounts')
+@section('title', 'Station services')
 
 @push('styles')
     <!-- Font Awesome -->
@@ -51,47 +51,37 @@
         </div>
         <div class="col-6"></div>
         <div class="col-6">
-            @permission('settings.discounts.create')
+            @permission('settings.stations.create')
                 <a href="#" class="mt-3 mb-3 btn btn-primary float-right" data-toggle="modal" data-target="#modal-default">
                     <i class="fas fa-plus mr-1"></i>
-                    {{ __('Create a period') }}
+                    {{ __('Add a station') }}
                 </a>
                 <div class="modal fade" id="modal-default">
-                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">{{ __('Create a period') }}</h4>
+                                <h4 class="modal-title">{{ __('Add a station') }}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form method="post" action="{{ route('settings.discounts.create')}}">
+                            <form method="post" action="{{ route('settings.stations.create')}}">
                                 @csrf
                                 <div class="modal-body card-body row">
-                                    <div class="form-group col-md-6">
-                                        <label for="name">{{ __('Name') }} </label>
-                                        <input id="name" class="form-control" type="text" name="name">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>District</label>
-                                        <select class="form-control" style="width: 100%;">
-                                            <option>LOSO</option>
-                                            <option>DCSE</option>
-                                            <option>Ngaoundere</option>
-                                        </select>
-                                    </div>
-                                    <!-- Date -->
-                                    <div class="form-group col-md-6">
-                                        <label for="start_date">{{ __('Start date') }} </label>
-                                        <input type="date" class="form-control" name="start_date" id="start_date"/>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="end_date">{{ __('End date') }} </label>
-                                        <input type="date" class="form-control" name="end_date" id="end_date"/>
+                                    <div class="form-group col-md-12">
+                                        <label for="name">{{ __('Name') }}  <sup class="text-danger">*</sup></label>
+                                        <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" type="text" name="name" placeholder="SS EFOULAN" required>
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label for="description">Description</label>
-                                        <textarea id="description" class="form-control" name="description" rows="3"></textarea>
+                                        <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                                        <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
+                                            @foreach ($districts as $district)
+                                            <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <!-- /.form-group -->
                                 </div>
@@ -102,7 +92,7 @@
                                         <i class="fass fa-xmark"></i>
                                         {{ __('Cancel') }} 
                                     </button>
-                                    <button type="button" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary">
                                         <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
                                         {{ __('Save') }} 
                                     </button>
@@ -131,7 +121,6 @@
                 <thead>
                     <tr>
                         <th>{{ __('Name') }} </th>
-                        <th> {{ __('Period') }}</th>
                         <th>{{ __('District') }}</th>
                         <th>{{ __('Created By') }} </th>
                         <th>{{ __('Validated By') }} </th>
@@ -139,89 +128,82 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($discounts as $discount)
+                    @foreach ($stations as $station)
                     <tr>
-                        <td>Trident</td>
-                        <td>Internet</td>
-                        <td>Win 95+</td>
-                        <td> 4</td>
-                        <td>X</td>
+                        <td>{{ $station->name }}</td>
+                        <td>{{ $station->district->name }}</td>
+                        <td>{{ $station->createdBy->name }}</td>
+                        <td>{{ $station->validatedBy->name }}</td>
                         <td>
 
-                        <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#discount-edit{{ $discount->id }}">
-                            <i class="fas fa-edit"></i> Update
-                        </a>
+                            @permission('settings.stations.update')
+                            <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#station-edit{{$station->id}}">
+                                <i class="fas fa-edit"></i> Update
+                            </a>
+                            @endpermission
+                            
+                            @permission('settings.stations.delete')
+                            <button type="button" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                            @endpermission
 
-                        <button type="button" class="btn btn-danger">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
-
-                        <div class="modal fade" id="discount-edit{{ $discount->id }}">
-                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">{{ __('Create a period') }}</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                            <div class="modal fade" id="station-edit{{$station->id}}">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">{{ __('Update a Station') }}</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="post" action="{{ route('settings.stations.update', $station->id)}}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body card-body row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="name">{{ __('Name') }} <sup class="text-danger">*</sup></label>
+                                                    <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $station->name) }}" type="text" name="name" placeholder="District Centre-Sud-Est" required>
+                                                    @error('name')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                                                    <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
+                                                        @foreach ($districts as $district)
+                                                        <option value="{{ $district->id }}" {{ ($station->district->id == $district->id | old('item') == $district->id) ? 'selected' : '' }}>{{ $district->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <!-- /.form-group -->
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                                    <ion-icon name="close-circle-outline"></ion-icon>
+                                                    <i class="fas-solid fa-xmark"></i>
+                                                    <i class="fass fa-xmark"></i>
+                                                    {{ __('Cancel') }} 
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
+                                                    {{ __('Update') }} 
+                                                </button>
+                                            </div>
+                                        </form>
+            
                                     </div>
-                                    <form method="post" action="{{ route('settings.discounts.update')}}">
-                                        @csrf
-                                        <div class="modal-body card-body row">
-                                            <div class="form-group col-md-6">
-                                                <label for="name">{{ __('Name') }} </label>
-                                                <input id="name" class="form-control" type="text" name="name">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>District</label>
-                                                <select class="form-control" style="width: 100%;">
-                                                    <option>LOSO</option>
-                                                    <option>DCSE</option>
-                                                    <option>Ngaoundere</option>
-                                                </select>
-                                            </div>
-                                            <!-- Date -->
-                                            <div class="form-group col-md-6">
-                                                <label for="start_date">{{ __('Start date') }} </label>
-                                                <input type="date" class="form-control" name="start_date" id="start_date"/>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="end_date">{{ __('End date') }} </label>
-                                                <input type="date" class="form-control" name="end_date" id="end_date"/>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label for="description">Description</label>
-                                                <textarea id="description" class="form-control" name="description" rows="3"></textarea>
-                                            </div>
-                                            <!-- /.form-group -->
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">
-                                                <ion-icon name="close-circle-outline"></ion-icon>
-                                                <i class="fas-solid fa-xmark"></i>
-                                                <i class="fass fa-xmark"></i>
-                                                {{ __('Cancel') }} 
-                                            </button>
-                                            <button type="button" class="btn btn-primary">
-                                                <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
-                                                {{ __('Update') }} 
-                                            </button>
-                                        </div>
-                                    </form>
-        
+                                    <!-- /.modal-content -->
                                 </div>
-                                <!-- /.modal-content -->
+                                <!-- /.modal-dialog -->
                             </div>
-                            <!-- /.modal-dialog -->
-                        </div>
-                        </td> 
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th>{{ __('Name') }} </th>
-                        <th> {{ __('Period') }}</th>
                         <th>{{ __('District') }}</th>
                         <th>{{ __('Created By') }} </th>
                         <th>{{ __('Validated By') }} </th>
@@ -229,7 +211,7 @@
                     </tr>
                 </tfoot>
               </table>
-              {{ $discounts->links('pagination::bootstrap-5') }}
+              {{ $stations->links('pagination::bootstrap-5') }}
             </div>
             <!-- /.card-body -->
           </div>

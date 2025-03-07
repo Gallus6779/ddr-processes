@@ -123,7 +123,7 @@
                             <ul class="nav nav-treeview">
                                 @permission('customers.discounts.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('customers.discounts.index') }}" class="nav-link">
+                                    <a href="{{ route('customers.discounts.read') }}" class="nav-link">
                                         <i class="nav-icon fas fa-user-tie"></i>
                                         <p>{{ __('Discounts') }}</p>
                                     </a>
@@ -150,19 +150,35 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                @permission('settings.districts.read')
+                                <li class="nav-item">
+                                    <a href="{{ route('settings.districts.read') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-user-tie"></i>
+                                        <p>{{ __('Districts') }}</p>
+                                    </a>
+                                </li>
+                                @endpermission
                                 @permission('settings.stations.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('settings.stations.index') }}" class="nav-link">
+                                    <a href="{{ route('settings.stations.read') }}" class="nav-link">
                                         <i class="nav-icon fas fa-user-tie"></i>
                                         <p>{{ __('Stations') }}</p>
                                     </a>
                                 </li>
                                 @endpermission
-                                @permission('settings.discounts.read')
+                                @permission('settings.discount_periods.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('settings.discounts.index') }}" class="nav-link">
+                                    <a href="{{ route('settings.discount_periods.read') }}" class="nav-link">
                                       <i class="nav-icon fas fa-coins"></i>
                                       <p>{{ __('Discounts period') }}</p>
+                                    </a>            
+                                </li>
+                                @endpermission
+                                @permission('settings.discounts.read')
+                                <li class="nav-item">
+                                    <a href="{{ route('settings.discounts.read') }}" class="nav-link">
+                                      <i class="nav-icon fas fa-coins"></i>
+                                      <p>{{ __('Discounts') }}</p>
                                     </a>            
                                 </li>
                                 @endpermission
