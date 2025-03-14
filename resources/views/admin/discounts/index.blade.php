@@ -70,7 +70,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                            <label for="district_id">beneficiary of discounts  <sup class="text-danger">*</sup></label>
                             <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
                                 @foreach ($districts as $district)
                                 {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
@@ -79,7 +79,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                            <label for="district_id">Discount period  <sup class="text-danger">*</sup></label>
                             <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
                                 @foreach ($districts as $district)
                                 {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
@@ -224,6 +224,15 @@
                 </tfoot>
               </table>
               {{ $discounts->links('pagination::bootstrap-5') }}
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary float-right">
+                    {{ __('Export as PDF') }}
+                </button>
+                <button type="button" class="mr-2 btn btn-warning float-right">
+                    {{ __('Export as Excel') }}
+                </button>
             </div>
             <!-- /.card-body -->
           </div>

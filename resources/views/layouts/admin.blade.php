@@ -116,7 +116,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-users-cog"></i>
                                 <p>
-                                    {{ __('Customers Manag.') }}
+                                    {{ __('Discounts Manag.') }}
                                     <i class="right fas fa-angle-down"></i>
                                 </p>
                             </a>
@@ -178,7 +178,7 @@
                                 <li class="nav-item">
                                     <a href="{{ route('settings.discounts.read') }}" class="nav-link">
                                       <i class="nav-icon fas fa-coins"></i>
-                                      <p>{{ __('Discounts') }}</p>
+                                      <p>{{ __('Beneficiary of Disc.') }}</p>
                                     </a>            
                                 </li>
                                 @endpermission
