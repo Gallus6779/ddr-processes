@@ -13,7 +13,9 @@ class Discount extends Model
         'card_id',
         'period_discount_id',
         'district_id',
-        'volume_caculated'   
+        'volume_caculated',
+        'created_by',
+        'validated_by'
     ];
 
     /**
@@ -44,6 +46,27 @@ class Discount extends Model
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);
+    }
+
+
+    /**
+     * Get the user that owns the Discount
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'createdBy');
+    }
+
+    /**
+     * Get the user that owns the Discount
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function validatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'createdBy');
     }
 
     

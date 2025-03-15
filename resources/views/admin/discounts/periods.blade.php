@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Discounts')
+@section('title', 'Discount Period')
 
 @push('styles')
     <!-- Font Awesome -->
@@ -65,33 +65,45 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form method="post" action="{{ route('settings.discounts.create')}}">
+                            <form method="post" action="{{ route('settings.discount_periods.create')}}">
                                 @csrf
                                 <div class="modal-body card-body row">
                                     <div class="form-group col-md-6">
-                                        <label for="name">{{ __('Name') }} </label>
-                                        <input id="name" class="form-control" type="text" name="name">
+                                        <label for="name">{{ __('Name') }}  <sup class="text-danger">*</sup></label>
+                                        <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" type="text" name="name" placeholder="District Centre-Sud-Est" required>
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>District</label>
-                                        <select class="form-control" style="width: 100%;">
-                                            <option>LOSO</option>
-                                            <option>DCSE</option>
-                                            <option>Ngaoundere</option>
+                                        <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                                        <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
+                                            @foreach ($districts as $district)
+                                            <option value="{{ $district->id }}" {{ (old('item') == $district->id) ? 'selected' : '' }}>{{ $district->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <!-- Date -->
                                     <div class="form-group col-md-6">
                                         <label for="start_date">{{ __('Start date') }} </label>
-                                        <input type="date" class="form-control" name="start_date" id="start_date"/>
+                                        <input type="date" class="form-control @error('start_date') is-invalid @enderror" value="{{ old('start_date') }}" name="start_date" id="start_date" required/>
+                                        @error('start_date')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="end_date">{{ __('End date') }} </label>
-                                        <input type="date" class="form-control" name="end_date" id="end_date"/>
+                                        <input type="date" class="form-control @error('end_date') is-invalid @enderror" value="{{ old('end_date') }}" name="end_date" id="end_date"/>
+                                        @error('end_date')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="description">Description</label>
-                                        <textarea id="description" class="form-control" name="description" rows="3"></textarea>
+                                        <textarea id="description" class="form-control  @error('description') is-invalid @enderror"  value="{{ old('description') }}" name="description" rows="3">{{ old('description') }}</textarea>
+                                        @error('description')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <!-- /.form-group -->
                                 </div>
@@ -102,7 +114,7 @@
                                         <i class="fass fa-xmark"></i>
                                         {{ __('Cancel') }} 
                                     </button>
-                                    <button type="button" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary">
                                         <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
                                         {{ __('Save') }} 
                                     </button>
@@ -132,6 +144,7 @@
                     <tr>
                         <th>{{ __('Name') }} </th>
                         <th> {{ __('Period') }}</th>
+                        <th> {{ __('Description') }}</th>
                         <th>{{ __('District') }}</th>
                         <th>{{ __('Created By') }} </th>
                         <th>{{ __('Validated By') }} </th>
@@ -139,24 +152,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($discounts as $discount)
+                    @foreach ($discount_periods as $discount_period)
                     <tr>
-                        <td>Trident</td>
-                        <td>Internet</td>
-                        <td>Win 95+</td>
-                        <td> 4</td>
-                        <td>X</td>
+                        <td>{{ $discount_period->name }}</td>
+                        <td>{{ $discount_period->start_date }} - {{ $discount_period->end_date }} </td>
+                        <td>{{ $discount_period->description }}</td>
+                        <td>{{ $discount_period->district->name }}</td>
+                        <td>{{ $discount_period->createdBy->name }}</td>
+                        <td>{{ $discount_period->validatedBy->name }}</td>
                         <td>
-
-                        <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#discount-edit{{ $discount->id }}">
+                        @permission('settings.discount_periods.update')
+                        <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#discount-edit{{ $discount_period->id }}">
                             <i class="fas fa-edit"></i> Update
                         </a>
+                        @endpermission
 
+                        @permission('settings.discount_periods.delete')
                         <button type="button" class="btn btn-danger">
                             <i class="fas fa-trash-alt"></i> Delete
                         </button>
+                        @endpermission
 
-                        <div class="modal fade" id="discount-edit{{ $discount->id }}">
+                        <div class="modal fade" id="discount-edit{{ $discount_period->id }}">
                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -165,33 +182,46 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form method="post" action="{{ route('settings.discounts.update')}}">
+                                    <form method="post" action="{{ route('settings.discount_periods.update', $discount_period->id)}}">
                                         @csrf
+                                        @method('PUT')
                                         <div class="modal-body card-body row">
                                             <div class="form-group col-md-6">
-                                                <label for="name">{{ __('Name') }} </label>
-                                                <input id="name" class="form-control" type="text" name="name">
+                                                <label for="name">{{ __('Name') }}  <sup class="text-danger">*</sup></label>
+                                                <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $discount_period->name) }}" type="text" name="name" placeholder="District Centre-Sud-Est" required>
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label>District</label>
-                                                <select class="form-control" style="width: 100%;">
-                                                    <option>LOSO</option>
-                                                    <option>DCSE</option>
-                                                    <option>Ngaoundere</option>
+                                                <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                                                <select class="form-control @error('district_id') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
+                                                    @foreach ($districts as $district)
+                                                    <option value="{{ $district->id }}" {{ ($discount_period->district->id == $district->id | old('item') == $district->id) ? 'selected' : '' }}>{{ $district->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                             <!-- Date -->
                                             <div class="form-group col-md-6">
                                                 <label for="start_date">{{ __('Start date') }} </label>
-                                                <input type="date" class="form-control" name="start_date" id="start_date"/>
+                                                <input type="date" class="form-control @error('start_date') is-invalid @enderror" value="{{ old('start_date', $discount_period->start_date) }}" name="start_date" id="start_date" required/>
+                                                @error('start_date')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="end_date">{{ __('End date') }} </label>
-                                                <input type="date" class="form-control" name="end_date" id="end_date"/>
+                                                <input type="date" class="form-control @error('end_date') is-invalid @enderror" value="{{ old('end_date', $discount_period->end_date) }}" name="end_date" id="end_date"/>
+                                                @error('end_date')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label for="description">Description</label>
-                                                <textarea id="description" class="form-control" name="description" rows="3"></textarea>
+                                                <textarea id="description" class="form-control  @error('description') is-invalid @enderror"  value="{{ old('description', $discount_period->description) }}" name="description" rows="3">{{ old('description', $discount_period->description) }}</textarea>
+                                                @error('description')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <!-- /.form-group -->
                                         </div>
@@ -202,7 +232,7 @@
                                                 <i class="fass fa-xmark"></i>
                                                 {{ __('Cancel') }} 
                                             </button>
-                                            <button type="button" class="btn btn-primary">
+                                            <button type="submit" class="btn btn-primary">
                                                 <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
                                                 {{ __('Update') }} 
                                             </button>
@@ -222,6 +252,7 @@
                     <tr>
                         <th>{{ __('Name') }} </th>
                         <th> {{ __('Period') }}</th>
+                        <th> {{ __('Description') }}</th>
                         <th>{{ __('District') }}</th>
                         <th>{{ __('Created By') }} </th>
                         <th>{{ __('Validated By') }} </th>
@@ -229,7 +260,7 @@
                     </tr>
                 </tfoot>
               </table>
-              {{ $discounts->links('pagination::bootstrap-5') }}
+              {{ $discount_periods->links('pagination::bootstrap-5') }}
             </div>
             <!-- /.card-body -->
           </div>

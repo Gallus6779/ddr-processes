@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,5 +48,7 @@ class AppServiceProvider extends ServiceProvider
             $possibleEnvs = ['local', 'dev', 'development']; // TODO: Move to starter.php
             return in_array(config('app.env'), $possibleEnvs);
         });
+
+        Paginator::useBootstrap();
     }
 }

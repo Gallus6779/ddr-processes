@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class District extends Model
+class Station extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'acronym',
+        'district_id',
         'created_by',
         'validated_by'
     ];
@@ -36,5 +36,15 @@ class District extends Model
     public function validatedBy(): HasOne
     {
         return $this->HasOne(User::class,  'id', 'validated_by');
+    }
+
+    /**
+     * Get the district that owns the Station
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class);
     }
 }

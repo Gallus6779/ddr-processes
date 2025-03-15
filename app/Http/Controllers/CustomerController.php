@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
+use App\Models\District;
+use App\Models\Discount;
+use App\Models\DiscountPeriod;
+
 class CustomerController extends Controller
 {
     /**
@@ -13,51 +17,33 @@ class CustomerController extends Controller
     public function index()
     // public function index(Request $request): View | JsonResponse
     {
-        validate_permission('customers.read');
-        validate_permission('customers.discounts.read');
+        // validate_permission('customers.discounts.read');
+        
+        // return view('admin.customers.discounts');
+    }
+    
+    /**
+     * 
+     */
+    public function discount_read(){
+        // Validate permission
+        try {
+            validate_permission('customers.read');
+            validate_permission('settings.discounts.read');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
+        }
 
-        // if ($request->ajax()) {
-        //     $rows = Permission::offset($request->start)->limit($request->length);
-        //     $totalRecords = Permission::count();
+        // Fetch districts with related models
+        // try {
+            $discounts = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
+            $discount_periods = DiscountPeriod::get();
+            $districts = District::get();
 
-        //     return DataTables::of($rows)
-        //         ->setTotalRecords($totalRecords)
-        //         ->setFilteredRecords($totalRecords)
-        //         ->addColumn('actions', function ($row) {
-        //             return Blade::render('
-        //                 <div class="btn-group">
-        //                     @permission(\'permissions.update\')
-        //                         @onlydev
-        //                             <a href="{{ route(\'admin.permissions.edit\', $row) }}" class="btn btn-default">Update</a>
-        //                         @endonlydev
-        //                     @endpermission
-        //                     @permission(\'permissions.delete\')
-        //                         @onlydev
-        //                             <button type="button" class="btn btn-danger delete-btn" data-destroy="{{ route(\'admin.permissions.destroy\', $row) }}">Delete</button>
-        //                         @endonlydev
-        //                     @endpermission
-        //                 </div>
-        //             ', ['row' => $row->id]);
-        //         })
-        //         ->addColumn('updated_at', function ($row) {
-        //             return Blade::render('
-        //                 {{ $row->updated_at->format(\'M d, Y\') }}
-        //             ', ['row' => $row]);
-        //         })
-        //         ->rawColumns(['actions', 'updated_at'])
-        //         ->make(true);
+            return view('admin.discounts.index', compact('discounts', 'discount_periods', 'districts'));
+        // } catch (\Exception $e) {
+        //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
         // }
-
-        // $tableConfigs = (new DataTablesColumnsBuilder(Permission::class))
-        //     ->setSearchable('name')
-        //     ->setOrderable('name')
-        //     ->setName('updated_at', 'Updated at')
-        //     ->removeColumns(['created_at'])
-        //     ->withActions()
-        //     ->make();
-
-        // return view('admin.customers.discounts', compact('tableConfigs'));
-        return view('admin.customers.discounts');
     }
 
     /**
