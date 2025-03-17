@@ -56,6 +56,29 @@
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" role="button">
+                            <i class="fas fa-user-circle"></i>
+                            <span>{{ $user->name }}</span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            @permission('profile.read')
+                            <a class="dropdown-item" href="{{ route('profile.index') }}">
+                                <i class="nav-icon fas fa-user"></i>
+                                My Profile 
+                            </a>
+                            @endpermission
+                            <a href="#" id="logout-button" class="dropdown-item">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                            <form id="logout-form" class="d-none" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                            </form>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </nav>
 
@@ -103,14 +126,14 @@
                                 </a>
                             </li>
                         @endpermission
-                        @permission('profile.read')
+                        <!-- @permission('profile.read')
                             <li class="nav-item">
                                 <a href="{{ route('profile.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p>{{ __('My Profile') }}</p>
                                 </a>
                             </li>
-                        @endpermission
+                        @endpermission -->
                         @permission('customers.read')
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -186,7 +209,7 @@
                         </li>
                         @endpermission
 
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="javascript:void(0);" id="logout-button" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>{{ __('Logout') }}</p>
@@ -194,7 +217,7 @@
                             <form id="logout-form" class="d-none" action="{{ route('logout') }}" method="POST">
                                 @csrf
                             </form>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
             </div>

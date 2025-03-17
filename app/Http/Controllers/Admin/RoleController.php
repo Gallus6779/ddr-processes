@@ -20,6 +20,9 @@ class RoleController extends Controller
 {
     public function index(Request $request): View | JsonResponse
     {
+
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
         validate_permission('roles.read');
 
         if ($request->ajax()) {
@@ -58,17 +61,18 @@ class RoleController extends Controller
             ->withActions()
             ->make();
 
-        return view('admin.roles.index', compact('tableConfigs'));
+        return view('admin.roles.index', compact('tableConfigs', 'user'));
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
         validate_permission('roles.create');
 
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
         $role = new Role();
         $permissions = Permission::all();
 
-        return view('admin.roles.create', compact('role', 'permissions'));
+        return view('admin.roles.create', compact('role', 'permissions', 'user'));
     }
 
     public function store(StoreRoleRequest $request): RedirectResponse
@@ -88,13 +92,15 @@ class RoleController extends Controller
             ->with('success', 'Role created successfully!');
     }
 
-    public function edit(Role $role): View
+    public function edit(Role $role, Request $request): View
     {
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
         validate_permission('roles.update');
 
         $permissions = Permission::all();
         $rolePermissions = $role->permissions->pluck('id')->toArray();
-        return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions','user'));
     }
 
     public function update(UpdateRoleRequest $request, Role $role): RedirectResponse

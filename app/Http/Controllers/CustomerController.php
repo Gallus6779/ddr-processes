@@ -25,7 +25,10 @@ class CustomerController extends Controller
     /**
      * 
      */
-    public function discount_read(){
+    public function discount_read(Request $request){
+
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+        
         // Validate permission
         try {
             validate_permission('customers.read');
@@ -40,7 +43,7 @@ class CustomerController extends Controller
             $discount_periods = DiscountPeriod::get();
             $districts = District::get();
 
-            return view('admin.discounts.index', compact('discounts', 'discount_periods', 'districts'));
+            return view('admin.discounts.index', compact('discounts', 'discount_periods', 'districts', 'user'));
         // } catch (\Exception $e) {
         //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
         // }
@@ -49,8 +52,11 @@ class CustomerController extends Controller
     /**
      * 
      */
-    public function consumptions(){
-        return view('admin.customers.consumptions');
+    public function consumptions(Request $request){
+
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
+        return view('admin.customers.consumptions', compact('user'));
     }
 
     /**
