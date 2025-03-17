@@ -18,6 +18,8 @@ class PermissionController extends Controller
 {
     public function index(Request $request): View | JsonResponse
     {
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
         validate_permission('permissions.read');
 
         if ($request->ajax()) {
@@ -60,16 +62,18 @@ class PermissionController extends Controller
             ->withActions()
             ->make();
 
-        return view('admin.permissions.index', compact('tableConfigs'));
+        return view('admin.permissions.index', compact('tableConfigs', 'user'));
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
         validate_permission('permissions.create');
         allow_only_dev_env();
 
         $permission = new Permission();
-        return view('admin.permissions.create', compact('permission'));
+        return view('admin.permissions.create', compact('permission','user'));
     }
 
     public function store(StorePermissionRequest $request): RedirectResponse
@@ -84,12 +88,14 @@ class PermissionController extends Controller
             ->with('success', 'Permission created successfully!');
     }
 
-    public function edit(Permission $permission): View
+    public function edit(Permission $permission, Request $request): View
     {
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
         validate_permission('permissions.update');
         allow_only_dev_env();
 
-        return view('admin.permissions.edit', compact('permission'));
+        return view('admin.permissions.edit', compact('permission','user'));
     }
 
     public function update(UpdatePermissionRequest $request, Permission $permission): RedirectResponse

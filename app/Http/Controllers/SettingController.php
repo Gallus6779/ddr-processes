@@ -15,7 +15,10 @@ class SettingController extends Controller
     /**
      * 
      */
-    public function station_read(){
+    public function station_read(Request $request){
+
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+        
         // Validate permission
         try {
             validate_permission('settings.stations.read');
@@ -28,7 +31,7 @@ class SettingController extends Controller
             $stations = Station::latest()->with('createdBy', 'validatedBy')->paginate(10);
             $districts = District::get();
 
-            return view('admin.station-services.index', compact('stations','districts'));
+            return view('admin.station-services.index', compact('stations','districts','user'));
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
         }
@@ -125,7 +128,10 @@ class SettingController extends Controller
     /**
      * 
      */
-    public function discount_periods_read(){
+    public function discount_periods_read(Request $request){
+
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
         // Validate permission
         try {
             validate_permission('settings.discount_periods.read');
@@ -140,7 +146,7 @@ class SettingController extends Controller
             // dd(1);
             $districts = District::get();
             
-            return view('admin.discounts.periods', compact('discount_periods', 'districts'));
+            return view('admin.discounts.periods', compact('discount_periods', 'districts', 'user'));
         // } catch (\Exception $e) {
         //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
         // }
@@ -259,7 +265,9 @@ class SettingController extends Controller
     /**
      * 
      */
-    public function districts_read(){
+    public function districts_read(Request $request){
+
+        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
 
         // Validate permission
         try {
@@ -273,7 +281,7 @@ class SettingController extends Controller
             $districts = District::latest()->with('createdBy', 'validatedBy')->paginate(10);
 
             // dd($districts);
-            return view('admin.districts.index', compact('districts'));
+            return view('admin.districts.index', compact('districts', 'user'));
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
         }
