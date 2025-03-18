@@ -102,6 +102,88 @@
                         </div>
                         @endforeach
                     </div>
+
+                    <div class="timeline">
+                    @php
+                        // $permissions = [
+                        //     ['name' => 'profile.read'],
+                        //     ['name' => 'dashboard.read'],
+                        //     ['name' => 'imports.create'],
+                        //     ['name' => 'imports.read'],
+                        //     ['name' => 'roles.create'],
+                        //     ['name' => 'roles.read'],
+                        //     ['name' => 'roles.update'],
+                        //     ['name' => 'roles.delete'],
+                        //     ['name' => 'permissions.create'],
+                        //     ['name' => 'permissions.read'],
+                        //     ['name' => 'permissions.update'],
+                        //     ['name' => 'permissions.delete'],
+                        //     ['name' => 'users.create'],
+                        //     ['name' => 'users.read'],
+                        //     ['name' => 'users.update'],
+                        //     ['name' => 'users.delete'],
+                        //     ['name' => 'profile.read'],
+                        //     ['name' => 'profile.update'],
+                        //     ['name' => 'dashboard.read'],
+                        //     ['name' => 'customers.read'],
+                        //     ['name' => 'customers.update'],
+                        //     ['name' => 'customers.discounts.read'],
+                        //     ['name' => 'customers.discounts.update'],
+                        //     ['name' => 'customers.discounts.create'],
+                        //     ['name' => 'customers.discounts.delete'],
+                        //     ['name' => 'customers.consumptions.create'],
+                        //     ['name' => 'customers.consumptions.update'],
+                        //     ['name' => 'customers.consumptions.read'],
+                        //     ['name' => 'customers.consumptions.delete'],
+                        //     ['name' => 'settings.discount_periods.read'],
+                        //     ['name' => 'settings.discount_periods.create'],
+                        //     ['name' => 'settings.discount_periods.delete'],
+                        //     ['name' => 'settings.discount_periods.update']
+                        // ];
+
+                        $permissions = [
+                            'profile.read',
+                            'dashboard.read',
+                            'imports.create',
+                            'imports.read',
+                            'roles.create',
+                            'roles.read',
+                            'roles.update',
+                            'roles.delete',
+                            'permissions.create',
+                            'permissions.read',
+                            'permissions.update',
+                            'permissions.delete',
+                            'users.create',
+                            'users.read',
+                            'users.update',
+                            'users.delete',
+                            'profile.read',
+                            'profile.update',
+                            'dashboard.read',
+                            'customers.read',
+                            'customers.update',
+                            'customers.discounts.read',
+                            'customers.discounts.update',
+                            'customers.discounts.create',
+                            'customers.discounts.delete',
+                            'customers.consumptions.create',
+                            'customers.consumptions.update',
+                            'customers.consumptions.read',
+                            'customers.consumptions.delete',
+                            'settings.discount_periods.read',
+                            'settings.discount_periods.create',
+                            'settings.discount_periods.delete',
+                            'settings.discount_periods.update'
+                    ];
+
+                        // var_dump($permissions);
+                        foreach($permissions as $permission){
+                            echo $permission;
+                            // \App\Models\Permission::firstOrCreate(['name' => $permission['name']], ['name' => $permission['name']]);
+                        }
+                    @endphp
+                    </div>
                 </div>
             </div>
         </div>

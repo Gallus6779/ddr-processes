@@ -12,19 +12,8 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::transaction(function () {
-            \App\Models\User::create([
-                'name' => 'Administrator',
-                'email' => 'admin@local.test',
-                'password' => Hash::make('password'),
-                'email_verified_at' => Carbon::now()
-            ]);
-
-            \App\Models\Role::create([
-                'name' => 'administrator'
-            ]);
-        });
-
+    
+        // $this->call(UserSeeder::class);
         $this->call(PermissionSeeder::class);
     }
 }
