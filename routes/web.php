@@ -9,7 +9,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
-
+Route::get('/', function () {
+    return redirect()->route('admin.dashboard.index');
+});
 
 Route::group(['middleware' => ['auth']], function () {
     
