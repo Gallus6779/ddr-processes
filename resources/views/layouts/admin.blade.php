@@ -102,7 +102,7 @@
                                 </a>
                             </li>
                         @endpermission
-                        @permission('roles.read')
+                        <!-- @permission('roles.read')
                             <li class="nav-item">
                                 <a href="{{ route('admin.roles.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-shield-alt"></i>
@@ -117,7 +117,7 @@
                                     <p>{{ __('Permissions') }}</p>
                                 </a>
                             </li>
-                        @endpermission
+                        @endpermission -->
                         @permission('users.read')
                             <li class="nav-item">
                                 <a href="{{ route('admin.users.index') }}" class="nav-link">
@@ -137,7 +137,7 @@
                         @permission('customers.read')
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-users-cog"></i>
+                                <i class="nav-icon fas fa-toolbox"></i>
                                 <p>
                                     {{ __('Discounts Manag.') }}
                                     <i class="right fas fa-angle-down"></i>
@@ -147,7 +147,7 @@
                                 @permission('customers.discounts.read')
                                 <li class="nav-item">
                                     <a href="{{ route('customers.discounts.read') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-user-tie"></i>
+                                        <i class="nav-icon fas fa-dollar-sign"></i>
                                         <p>{{ __('Discounts') }}</p>
                                     </a>
                                 </li>
@@ -155,8 +155,24 @@
                                 @permission('customers.consumptions.read')
                                 <li class="nav-item">
                                     <a href="{{ route('customers.consumptions') }}" class="nav-link">
-                                      <i class="nav-icon fas fa-coins"></i>
+                                      <i class="nav-icon fas fa-oil-can"></i>
                                       <p>{{ __('Consumptions') }}</p>
+                                    </a>            
+                                </li>
+                                @endpermission
+                                @permission('settings.discount_periods.read')
+                                <li class="nav-item">
+                                    <a href="{{ route('settings.discount_periods.read') }}" class="nav-link">
+                                      <i class="nav-icon fas fa-calendar-alt"></i>
+                                      <p>{{ __('Discounts period') }}</p>
+                                    </a>            
+                                </li>
+                                @endpermission
+                                @permission('settings.discounts.read')
+                                <li class="nav-item">
+                                    <a href="{{ route('settings.discounts.read') }}" class="nav-link">
+                                      <i class="nav-icon fas fa-hand-holding-usd"></i>
+                                      <p>{{ __('Beneficiary of Disc.') }}</p>
                                     </a>            
                                 </li>
                                 @endpermission
@@ -166,7 +182,7 @@
                         @permission('settings.read')
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-users-cog"></i>
+                                <i class="nav-icon fas fa-cogs"></i>
                                 <p>
                                     {{ __('Settings') }}
                                     <i class="right fas fa-angle-down"></i>
@@ -176,7 +192,7 @@
                                 @permission('settings.districts.read')
                                 <li class="nav-item">
                                     <a href="{{ route('settings.districts.read') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-user-tie"></i>
+                                        <i class="nav-icon fas fa-building"></i>
                                         <p>{{ __('Districts') }}</p>
                                     </a>
                                 </li>
@@ -184,12 +200,12 @@
                                 @permission('settings.stations.read')
                                 <li class="nav-item">
                                     <a href="{{ route('settings.stations.read') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-user-tie"></i>
+                                        <i class="nav-icon fas fa-gas-pump"></i>
                                         <p>{{ __('Stations') }}</p>
                                     </a>
                                 </li>
                                 @endpermission
-                                @permission('settings.discount_periods.read')
+                                <!-- @permission('settings.discount_periods.read')
                                 <li class="nav-item">
                                     <a href="{{ route('settings.discount_periods.read') }}" class="nav-link">
                                       <i class="nav-icon fas fa-coins"></i>
@@ -203,6 +219,22 @@
                                       <i class="nav-icon fas fa-coins"></i>
                                       <p>{{ __('Beneficiary of Disc.') }}</p>
                                     </a>            
+                                </li>
+                                @endpermission -->
+                                @permission('roles.read')
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.roles.index') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-shield-alt"></i>
+                                        <p>{{ __('Roles') }}</p>
+                                    </a>
+                                </li>
+                                @endpermission
+                                @permission('permissions.read')
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.permissions.index') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-user-shield"></i>
+                                        <p>{{ __('Permissions') }}</p>
+                                    </a>
                                 </li>
                                 @endpermission
                             </ul> 
