@@ -57,6 +57,7 @@ class CustomerController extends Controller
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
 
         return view('admin.customers.consumptions', compact('user'));
+
     }
 
     /**

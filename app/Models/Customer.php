@@ -46,4 +46,5 @@ class Customer extends Model
     {
         return $this->hasMany(Discount::class);
     }
+
 }

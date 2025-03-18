@@ -23,6 +23,7 @@ class UserController extends Controller
     {
 
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
         validate_permission('users.read');
 
         if ($request->ajax()) {
@@ -70,6 +71,7 @@ class UserController extends Controller
     {
         validate_permission('users.create');
         // $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
 
         $user = new User();
         $roles = Role::all();
