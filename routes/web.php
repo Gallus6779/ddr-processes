@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
-
-
 Route::group(['middleware' => ['auth']], function () {
     
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
@@ -59,8 +56,3 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 require __DIR__ . '/auth.php';
-
-Route::get('/', function () {
-    return redirect()->route('admin.dashboard.index');
-});
-

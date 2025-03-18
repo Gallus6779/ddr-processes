@@ -126,20 +126,24 @@
                                 </a>
                             </li>
                         @endpermission
-                        <!-- @permission('profile.read')
+                         {{-- @permission('profile.read')
+
                             <li class="nav-item">
                                 <a href="{{ route('profile.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p>{{ __('My Profile') }}</p>
                                 </a>
                             </li>
-                        @endpermission -->
+
+                        @endpermission --}}
+
                         @permission('customers.read')
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-users-cog"></i>
                                 <p>
                                     {{ __('Discounts Manag.') }}
+
                                     <i class="right fas fa-angle-down"></i>
                                 </p>
                             </a>
@@ -147,6 +151,7 @@
                                 @permission('customers.discounts.read')
                                 <li class="nav-item">
                                     <a href="{{ route('customers.discounts.read') }}" class="nav-link">
+
                                         <i class="nav-icon fas fa-user-tie"></i>
                                         <p>{{ __('Discounts') }}</p>
                                     </a>
@@ -218,6 +223,7 @@
                                 @csrf
                             </form>
                         </li> -->
+
                     </ul>
                 </nav>
             </div>

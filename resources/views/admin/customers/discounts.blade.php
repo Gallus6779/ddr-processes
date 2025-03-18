@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 
+
 @section('title', 'Discounts')
 
 @push('styles')
@@ -230,6 +231,7 @@
                 </tfoot>
               </table>
               {{ $discounts->links('pagination::bootstrap-5') }}
+
             </div>
             <!-- /.card-body -->
           </div>
@@ -239,6 +241,7 @@
         <!-- /.Left col -->
     </div>
       <!-- /.row (main row) -->
+
 @endsection
 
 @push('scripts')

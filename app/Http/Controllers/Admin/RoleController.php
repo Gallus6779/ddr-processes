@@ -100,6 +100,7 @@ class RoleController extends Controller
 
         $permissions = Permission::all();
         $rolePermissions = $role->permissions->pluck('id')->toArray();
+
         return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions','user'));
     }
 

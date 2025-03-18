@@ -42,6 +42,14 @@ class PermissionSeeder extends Seeder
             \App\Models\Permission::create([
                 'name' => 'dashboard.read'
             ]);
+
+            \App\Models\Permission::create([
+                'name' => 'imports.read',
+            ]);
+
+            \App\Models\Permission::create([
+                'name' => 'imports.create',
+            ]);
         });
     }
 }

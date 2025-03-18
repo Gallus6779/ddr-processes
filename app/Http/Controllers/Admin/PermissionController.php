@@ -19,7 +19,6 @@ class PermissionController extends Controller
     public function index(Request $request): View | JsonResponse
     {
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-
         validate_permission('permissions.read');
 
         if ($request->ajax()) {
@@ -68,7 +67,6 @@ class PermissionController extends Controller
     public function create(Request $request): View
     {
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-
         validate_permission('permissions.create');
         allow_only_dev_env();
 
