@@ -108,6 +108,7 @@ class SettingController extends Controller
      */
     public function discount_read(){
         // Validate permission
+        dd(1);
         try {
             validate_permission('settings.discounts.read');
         } catch (\Exception $e) {
@@ -117,6 +118,7 @@ class SettingController extends Controller
         // Fetch districts with related models
         try {
             $discount = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
+            // $discount = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
             $districts = District::get();
 
             return view('admin.discounts.index', compact('discounts', 'districts'));

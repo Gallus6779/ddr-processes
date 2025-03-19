@@ -31,26 +31,6 @@ class PermissionSeeder extends Seeder
                 }
             }
 
-            // \App\Models\Permission::create([
-            //     'name' => 'profile.read'
-            // ]);
-
-            // \App\Models\Permission::create([
-            //     'name' => 'profile.update'
-            // ]);
-
-            // \App\Models\Permission::create([
-            //     'name' => 'dashboard.read'
-            // ]);
-
-            // \App\Models\Permission::create([
-            //     'name' => 'imports.read',
-            // ]);
-
-            // \App\Models\Permission::firstorcreate([
-            //     'name' => 'imports.create',
-            // ]);
-
             $permissions = [
                 'roles.create',
                 'roles.read',

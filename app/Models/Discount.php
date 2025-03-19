@@ -56,7 +56,7 @@ class Discount extends Model
      */
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'createdBy');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**
@@ -66,7 +66,7 @@ class Discount extends Model
      */
     public function validatedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'createdBy');
+        return $this->belongsTo(User::class, 'validated_by');
     }
 
     
