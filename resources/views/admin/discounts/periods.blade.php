@@ -51,7 +51,7 @@
         </div>
         <div class="col-6"></div>
         <div class="col-6">
-            @permission('settings.discounts.create')
+            @permission('discounts.discounts.create')
                 <a href="#" class="mt-3 mb-3 btn btn-primary float-right" data-toggle="modal" data-target="#modal-default">
                     <i class="fas fa-plus mr-1"></i>
                     {{ __('Create a period') }}
@@ -65,7 +65,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form method="post" action="{{ route('settings.discount_periods.create')}}">
+                            <form method="post" action="{{ route('discounts.discount_periods.create')}}">
                                 @csrf
                                 <div class="modal-body card-body row">
                                     <div class="form-group col-md-6">
@@ -161,7 +161,7 @@
                         <td>{{ $discount_period->createdBy->name }}</td>
                         <td>{{ $discount_period->validatedBy->name }}</td>
                         <td>
-                        @permission('settings.discount_periods.update')
+                        @permission('discounts.discount_periods.update')
                         <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#discount-edit{{ $discount_period->id }}">
                             <i class="fas fa-edit"></i> Update
                         </a>
@@ -182,7 +182,7 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form method="post" action="{{ route('settings.discount_periods.update', $discount_period->id)}}">
+                                    <form method="post" action="{{ route('discounts.discount_periods.update', $discount_period->id)}}">
                                         @csrf
                                         @method('PUT')
                                         <div class="modal-body card-body row">

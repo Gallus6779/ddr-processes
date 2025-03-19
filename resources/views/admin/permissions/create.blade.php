@@ -10,7 +10,7 @@
                     <h3 class="card-title">Add a new Permission form</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.permissions.store') }}" method="POST">
+                    <form action="{{ route('settings.permissions.store') }}" method="POST">
                         @csrf
 
                         @include('admin.permissions._form')
@@ -19,7 +19,7 @@
                             @permission('permission.create')
                                 <button type="submit" class="btn btn-primary mr-2">{{ __('Save') }}</button>
                             @endpermission
-                            <a href="{{ route('admin.permissions.index') }}" class="btn btn-default"
+                            <a href="{{ route('settings.permissions.index') }}" class="btn btn-default"
                                 role="button">{{ __('Cancel') }}</a>
                         </div>
 

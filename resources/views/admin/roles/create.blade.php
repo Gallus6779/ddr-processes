@@ -10,7 +10,7 @@
                     <h3 class="card-title">Add a new Role form</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.roles.store') }}" method="POST">
+                    <form action="{{ route('settings.roles.store') }}" method="POST">
                         @csrf
 
                         @include('admin.roles._form')
@@ -32,7 +32,7 @@
                             @permission('roles.create')
                                 <button type="submit" class="btn btn-primary mr-2">{{ __('Save') }}</button>
                             @endpermission
-                            <a href="{{ route('admin.roles.index') }}" class="btn btn-default"
+                            <a href="{{ route('settings.roles.index') }}" class="btn btn-default"
                                 role="button">{{ __('Cancel') }}</a>
                         </div>
 

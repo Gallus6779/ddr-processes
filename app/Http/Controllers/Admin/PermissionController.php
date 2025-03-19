@@ -33,12 +33,12 @@ class PermissionController extends Controller
                         <div class="btn-group">
                             @permission(\'permissions.update\')
                                 @onlydev
-                                    <a href="{{ route(\'admin.permissions.edit\', $row) }}" class="btn btn-default">Update</a>
+                                    <a href="{{ route(\'settings.permissions.edit\', $row) }}" class="btn btn-default">Update</a>
                                 @endonlydev
                             @endpermission
                             @permission(\'permissions.delete\')
                                 @onlydev
-                                    <button type="button" class="btn btn-danger delete-btn" data-destroy="{{ route(\'admin.permissions.destroy\', $row) }}">Delete</button>
+                                    <button type="button" class="btn btn-danger delete-btn" data-destroy="{{ route(\'settings.permissions.destroy\', $row) }}">Delete</button>
                                 @endonlydev
                             @endpermission
                         </div>
@@ -82,7 +82,7 @@ class PermissionController extends Controller
         Permission::create($request->only('name'));
 
         return redirect()
-            ->route('admin.permissions.index')
+            ->route('settings.permissions.index')
             ->with('success', 'Permission created successfully!');
     }
 
@@ -104,7 +104,7 @@ class PermissionController extends Controller
         $permission->update($request->only('name'));
 
         return redirect()
-            ->route('admin.permissions.index')
+            ->route('settings.permissions.index')
             ->with('success', 'Permission updated successfully!');
     }
 
@@ -115,7 +115,7 @@ class PermissionController extends Controller
 
         $permission->delete();
         return redirect()
-            ->route('admin.permissions.index')
+            ->route('settings.permissions.index')
             ->with('success', 'Permission deleted successfully!');
     }
 }

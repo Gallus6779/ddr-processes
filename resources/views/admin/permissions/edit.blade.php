@@ -20,7 +20,7 @@
                             @permission('permissions.update')
                                 <button type="submit" class="btn btn-primary mr-2">{{ __('Update') }}</button>
                             @endpermission
-                            <a href="{{ route('admin.permissions.index') }}" class="btn btn-default"
+                            <a href="{{ route('settings.permissions.index') }}" class="btn btn-default"
                                 role="button">{{ __('Cancel') }}</a>
                         </div>
 

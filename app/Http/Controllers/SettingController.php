@@ -106,53 +106,56 @@ class SettingController extends Controller
     /**
      * 
      */
-    public function discount_read(){
-        // Validate permission
-        dd(1);
-        try {
-            validate_permission('settings.discounts.read');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
-        }
+    // public function discount_read(Request $request){
 
-        // Fetch districts with related models
-        try {
-            $discount = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
-            // $discount = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
-            $districts = District::get();
-
-            return view('admin.discounts.index', compact('discounts', 'districts'));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
-        }
-    }
-
-    /**
-     * 
-     */
-    public function discount_periods_read(Request $request){
-
-        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-
-        // Validate permission
-        try {
-            validate_permission('settings.discount_periods.read');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
-        }
+    //     $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
         
-        // Fetch districts with related models
-        // try {
-            // dd(1);
-            $discount_periods = DiscountPeriod::latest()->with('createdBy', 'validatedBy')->paginate(10);
-            // dd(1);
-            $districts = District::get();
+    //     // Validate permission
+    //     try {
+    //         validate_permission('discounts.read');
+    //         validate_permission('discounts.discounts.read');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
+    //     }
+
+    //     // Fetch districts with related models
+    //     // try {
+    //         $discounts = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
+    //         $discount_periods = DiscountPeriod::get();
+    //         $districts = District::get();
+
+    //         return view('admin.discounts.discounts', compact('discounts', 'discount_periods', 'districts', 'user'));
+    //     // } catch (\Exception $e) {
+    //     //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
+    //     // }
+    // }
+
+    // /**
+    //  * 
+    //  */
+    // public function discount_periods_read(Request $request){
+
+    //     $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+
+    //     // Validate permission
+    //     try {
+    //         validate_permission('discounts.discount_periods.read');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
+    //     }
+        
+    //     // Fetch districts with related models
+    //     // try {
+    //         // dd(1);
+    //         $discount_periods = DiscountPeriod::latest()->with('createdBy', 'validatedBy')->paginate(10);
+    //         // dd(1);
+    //         $districts = District::get();
             
-            return view('admin.discounts.periods', compact('discount_periods', 'districts', 'user'));
-        // } catch (\Exception $e) {
-        //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
-        // }
-    }
+    //         return view('admin.discounts.periods', compact('discount_periods', 'districts', 'user'));
+    //     // } catch (\Exception $e) {
+    //     //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
+    //     // }
+    // }
 
     /**
      * 
@@ -161,7 +164,7 @@ class SettingController extends Controller
 
         // Validate permission
         try {
-            validate_permission('settings.discount_periods.create');
+            validate_permission('discounts.discount_periods.create');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
@@ -216,7 +219,7 @@ class SettingController extends Controller
 
         // Validate permission
         try {        
-            validate_permission('settings.discount_periods.update');
+            validate_permission('discounts.discount_periods.update');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
@@ -255,14 +258,14 @@ class SettingController extends Controller
         return back()->with('success', 'District updated successfully.');
     }
 
-    /**
-     * 
-     */
-    public function settings_discounts_create(Request $request){
-        validate_permission('settings.discounts.create');
+    // /**
+    //  * 
+    //  */
+    // public function settings_discounts_create(Request $request){
+    //     validate_permission('discounts.discounts.create');
 
-        dd($request);
-    }
+    //     dd($request);
+    // }
 
     /**
      * 

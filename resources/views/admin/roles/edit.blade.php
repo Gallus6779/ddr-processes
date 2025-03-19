@@ -10,7 +10,7 @@
                     <h3 class="card-title">Edit a Role form</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.roles.update', $role) }}" method="POST">
+                    <form action="{{ route('settings.roles.update', $role) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -35,7 +35,7 @@
                             @permission('roles.update')
                                 <button type="submit" class="btn btn-primary mr-2">{{ __('Update') }}</button>
                             @endpermission
-                            <a href="{{ route('admin.roles.index') }}" class="btn btn-default"
+                            <a href="{{ route('settings.roles.index') }}" class="btn btn-default"
                                 role="button">{{ __('Cancel') }}</a>
                         </div>
 

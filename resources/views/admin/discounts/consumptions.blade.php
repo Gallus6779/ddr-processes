@@ -7,7 +7,7 @@
     <div class="col-6"></div>
     <div class="col-6">
         @permission('roles.create')
-            <a href="{{ route('admin.roles.create') }}" class="mt-3 btn btn-primary float-right">
+            <a href="{{ route('settings.roles.create') }}" class="mt-3 btn btn-primary float-right">
                 <i class="fas fa-plus mr-1"></i>
                 {{ __('New Role') }}
             </a>

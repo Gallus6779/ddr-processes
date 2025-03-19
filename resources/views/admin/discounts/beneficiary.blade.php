@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Discounts')
+
+@section('title', 'Beneficiary of Discounts')
 
 @push('styles')
     <!-- Font Awesome -->
@@ -49,59 +50,70 @@
                 </div>      
             @endif
         </div>
-        <div class="col-12 mt-3">
-            @permission('settings.discounts.create')
-            <!-- general form elements -->
-            <div class="card card-primary">
-                <div class="card-header">
-                  <h3 class="card-title">{{ __('Calcultation of Discount')}}</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form>
-                    <div class="card-body row">
-                        <div class="form-group col-md-4">
-                            <label for="district_id">District  <sup class="text-danger">*</sup></label>
-                            <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
-                                @foreach ($districts as $district)
-                                {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
-                                <option value="" >{{ $district->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="district_id">beneficiary of discounts  <sup class="text-danger">*</sup></label>
-                            <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
-                                @foreach ($districts as $district)
-                                {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
-                                <option value="" >{{ $district->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="district_id">Discount period  <sup class="text-danger">*</sup></label>
-                            <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
-                                @foreach ($districts as $district)
-                                {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
-                                <option value="" >{{ $district->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-    
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary float-right">
-                            {{ __('Calculate a discount') }}
-                        </button>
-                    </div>
-                    </form>
-                </div>
-              <!-- /.card -->
-                {{-- <a href="#" class="mt-3 mb-3 btn btn-primary float-right" data-toggle="modal" data-target="#modal-default">
+        <div class="col-6"></div>
+        <div class="col-6">
+            @permission('discounts.beneficiary.create')
+                <a href="#" class="mt-3 mb-3 btn btn-primary float-right" data-toggle="modal" data-target="#modal-default">
                     <i class="fas fa-plus mr-1"></i>
-                    {{ __('Create a period') }}
-                </a> --}}
+                    {{ __('Add a beneficiary') }}
+                </a>
+                <div class="modal fade" id="modal-default">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">{{ __('Add a beneficiary') }}</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post" action="{{ route('discounts.beneficiary.create')}}">
+                                @csrf
+                                <div class="modal-body card-body row">
+                                    <div class="form-group col-md-6">
+                                        <label for="customertype">{{ __('Customer Type') }}</label>
+                                        <select class="form-control" style="width: 100%;">
+                                            <option>Entreprise</option>
+                                            <option>Particulier</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>District</label>
+                                        <select class="form-control" style="width: 100%;">
+                                            <option>LOSO</option>
+                                            <option>DCSE</option>
+                                            <option>Ngaoundere</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="name">{{ __('Name') }} </label>
+                                        <input id="name" class="form-control" type="text" name="name">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="cardnumber">{{ __('CardNumber') }} </label>
+                                        <input id="cardnumber" class="form-control" type="number" name="cardnumber">
+                                    </div>                                    
+                                    
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                        <ion-icon name="close-circle-outline"></ion-icon>
+                                        <i class="fas-solid fa-xmark"></i>
+                                        <i class="fass fa-xmark"></i>
+                                        {{ __('Cancel') }} 
+                                    </button>
+                                    <button type="button" class="btn btn-primary">
+                                        <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
+                                        {{ __('Save') }} 
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
             @endpermission
         </div>
     </div>
@@ -111,18 +123,15 @@
           
         <div class="card">
             <div class="card-header">
-              <h3 class="card-title">{{ __('Customers Discounts') }}  </h3>
+              <h3 class="card-title">{{ __('Discount Beneficiary') }}  </h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>{{ __('CustomerName') }} </th>
-                        <th>{{ __('CadrNumber') }} </th>
-                        <th>{{ __('Quantity') }} </th>
-                        <th>{{ __('Amount') }} </th>
-                        <th> {{ __('Discount Period') }}</th>
+                        <th>{{ __('Name') }} </th>
+                        <th> {{ __('CardNumber') }}</th>
                         <th>{{ __('District') }}</th>
                         <th>{{ __('Created By') }} </th>
                         <th>{{ __('Validated By') }} </th>
@@ -211,11 +220,8 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>{{ __('CustomerName') }} </th>
-                        <th>{{ __('CadrNumber') }} </th>
-                        <th>{{ __('Quantity') }} </th>
-                        <th>{{ __('Amount') }} </th>
-                        <th> {{ __('Discount Period') }}</th>
+                        <th>{{ __('Name') }} </th>
+                        <th> {{ __('CardNumber') }}</th>
                         <th>{{ __('District') }}</th>
                         <th>{{ __('Created By') }} </th>
                         <th>{{ __('Validated By') }} </th>
@@ -224,15 +230,7 @@
                 </tfoot>
               </table>
               {{ $discounts->links('pagination::bootstrap-5') }}
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary float-right">
-                    {{ __('Export as PDF') }}
-                </button>
-                <button type="button" class="mr-2 btn btn-warning float-right">
-                    {{ __('Export as Excel') }}
-                </button>
+
             </div>
             <!-- /.card-body -->
           </div>
@@ -242,6 +240,7 @@
         <!-- /.Left col -->
     </div>
       <!-- /.row (main row) -->
+
 @endsection
 
 @push('scripts')

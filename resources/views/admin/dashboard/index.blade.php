@@ -30,7 +30,7 @@
                 <div class="icon">
                     <i class="fas fa-user-tag"></i>
                 </div>
-                <a href="{{ route('admin.roles.index') }}" class="small-box-footer">
+                <a href="{{ route('settings.roles.index') }}" class="small-box-footer">
                     More info <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -46,7 +46,7 @@
                 <div class="icon">
                     <i class="fas fa-key"></i>
                 </div>
-                <a href="{{ route('admin.permissions.index') }}" class="small-box-footer">
+                <a href="{{ route('settings.permissions.index') }}" class="small-box-footer">
                     More info <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -127,18 +127,18 @@
                         //     ['name' => 'dashboard.read'],
                         //     ['name' => 'customers.read'],
                         //     ['name' => 'customers.update'],
-                        //     ['name' => 'customers.discounts.read'],
+                        //     ['name' => 'discounts.discounts.read'],
                         //     ['name' => 'customers.discounts.update'],
                         //     ['name' => 'customers.discounts.create'],
                         //     ['name' => 'customers.discounts.delete'],
-                        //     ['name' => 'customers.consumptions.create'],
-                        //     ['name' => 'customers.consumptions.update'],
-                        //     ['name' => 'customers.consumptions.read'],
-                        //     ['name' => 'customers.consumptions.delete'],
-                        //     ['name' => 'settings.discount_periods.read'],
-                        //     ['name' => 'settings.discount_periods.create'],
+                        //     ['name' => 'discounts.consumptions.create'],
+                        //     ['name' => 'discounts.consumptions.update'],
+                        //     ['name' => 'discounts.consumptions.read'],
+                        //     ['name' => 'discounts.consumptions.delete'],
+                        //     ['name' => 'discounts.discount_periods.read'],
+                        //     ['name' => 'discounts.discount_periods.create'],
                         //     ['name' => 'settings.discount_periods.delete'],
-                        //     ['name' => 'settings.discount_periods.update']
+                        //     ['name' => 'discounts.discount_periods.update']
                         // ];
 
                         $permissions = [
@@ -161,20 +161,20 @@
                             'profile.read',
                             'profile.update',
                             'dashboard.read',
-                            'customers.read',
-                            'customers.update',
-                            'customers.discounts.read',
+                            'discounts.read',
+                            'discounts.update',
+                            'discounts.discounts.read',
                             'customers.discounts.update',
                             'customers.discounts.create',
                             'customers.discounts.delete',
-                            'customers.consumptions.create',
-                            'customers.consumptions.update',
-                            'customers.consumptions.read',
-                            'customers.consumptions.delete',
-                            'settings.discount_periods.read',
-                            'settings.discount_periods.create',
-                            'settings.discount_periods.delete',
-                            'settings.discount_periods.update'
+                            'discounts.consumptions.create',
+                            'discounts.consumptions.update',
+                            'discounts.consumptions.read',
+                            'discounts.consumptions.delete',
+                            'discounts.discount_periods.read',
+                            'discounts.discount_periods.create',
+                            'discounts.discount_periods.delete',
+                            'discounts.discount_periods.update'
                     ];
 
                         // var_dump($permissions);

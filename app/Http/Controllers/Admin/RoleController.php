@@ -36,10 +36,10 @@ class RoleController extends Controller
                     return Blade::render('
                         <div class="btn-group">
                             @permission(\'roles.update\')
-                                <a href="{{ route(\'admin.roles.edit\', $role) }}" class="btn btn-default">Update</a>
+                                <a href="{{ route(\'settings.roles.edit\', $role) }}" class="btn btn-default">Update</a>
                             @endpermission
                             @permission(\'roles.delete\')
-                                <button type="button" class="btn btn-danger delete-btn" data-destroy="{{ route(\'admin.roles.destroy\', $role) }}">Delete</button>
+                                <button type="button" class="btn btn-danger delete-btn" data-destroy="{{ route(\'settings.roles.destroy\', $role) }}">Delete</button>
                             @endpermission
                         </div>
                     ', ['role' => $role->id]);
@@ -88,7 +88,7 @@ class RoleController extends Controller
         });
 
         return redirect()
-            ->route('admin.roles.index')
+            ->route('settings.roles.index')
             ->with('success', 'Role created successfully!');
     }
 
@@ -117,7 +117,7 @@ class RoleController extends Controller
         });
 
         return redirect()
-            ->route('admin.roles.index')
+            ->route('settings.roles.index')
             ->with('success', 'Role updated successfully!');
     }
 
@@ -127,7 +127,7 @@ class RoleController extends Controller
 
         $role->delete();
         return redirect()
-            ->route('admin.roles.index')
+            ->route('settings.roles.index')
             ->with('success', 'Role deleted successfully!');
     }
 }

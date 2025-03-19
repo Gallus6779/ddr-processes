@@ -102,9 +102,9 @@
                                 </a>
                             </li>
                         @endpermission
-                        <!-- @permission('roles.read')
+                        {{-- @permission('roles.read')
                             <li class="nav-item">
-                                <a href="{{ route('admin.roles.index') }}" class="nav-link">
+                                <a href="{{ route('settings.roles.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-shield-alt"></i>
                                     <p>{{ __('Roles') }}</p>
                                 </a>
@@ -112,12 +112,12 @@
                         @endpermission
                         @permission('permissions.read')
                             <li class="nav-item">
-                                <a href="{{ route('admin.permissions.index') }}" class="nav-link">
+                                <a href="{{ route('settings.permissions.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-user-shield"></i>
                                     <p>{{ __('Permissions') }}</p>
                                 </a>
                             </li>
-                        @endpermission -->
+                        @endpermission --}}
                         @permission('users.read')
                             <li class="nav-item">
                                 <a href="{{ route('admin.users.index') }}" class="nav-link">
@@ -148,33 +148,33 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                @permission('customers.discounts.read')
+                                @permission('discounts.discounts.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('customers.discounts.read') }}" class="nav-link">
+                                    <a href="{{ route('discounts.discounts.read') }}" class="nav-link">
                                         <i class="nav-icon fas fa-dollar-sign"></i>
                                         <p>{{ __('Discounts') }}</p>
                                     </a>
                                 </li>
                                 @endpermission
-                                @permission('customers.consumptions.read')
+                                @permission('discounts.consumptions.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('customers.consumptions') }}" class="nav-link">
+                                    <a href="{{ route('discounts.consumptions') }}" class="nav-link">
                                       <i class="nav-icon fas fa-oil-can"></i>
                                       <p>{{ __('Consumptions') }}</p>
                                     </a>            
                                 </li>
                                 @endpermission
-                                @permission('settings.discount_periods.read')
+                                @permission('discounts.discount_periods.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('settings.discount_periods.read') }}" class="nav-link">
+                                    <a href="{{ route('discounts.discount_periods.read') }}" class="nav-link">
                                       <i class="nav-icon fas fa-calendar-alt"></i>
                                       <p>{{ __('Discounts period') }}</p>
                                     </a>            
                                 </li>
                                 @endpermission
-                                @permission('settings.discounts.read')
+                                @permission('discounts.beneficiary.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('settings.discounts.read') }}" class="nav-link">
+                                    <a href="{{ route('discounts.beneficiary.read') }}" class="nav-link">
                                       <i class="nav-icon fas fa-hand-holding-usd"></i>
                                       <p>{{ __('Beneficiary of Disc.') }}</p>
                                     </a>            
@@ -209,7 +209,7 @@
                                     </a>
                                 </li>
                                 @endpermission
-                                <!-- @permission('settings.discount_periods.read')
+                                {{-- @permission('settings.discount_periods.read')
                                 <li class="nav-item">
                                     <a href="{{ route('settings.discount_periods.read') }}" class="nav-link">
                                       <i class="nav-icon fas fa-coins"></i>
@@ -217,17 +217,17 @@
                                     </a>            
                                 </li>
                                 @endpermission
-                                @permission('settings.discounts.read')
+                                @permission('discounts.discounts.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('settings.discounts.read') }}" class="nav-link">
+                                    <a href="{{ route('discounts.discounts.read') }}" class="nav-link">
                                       <i class="nav-icon fas fa-coins"></i>
                                       <p>{{ __('Beneficiary of Disc.') }}</p>
                                     </a>            
                                 </li>
-                                @endpermission -->
+                                @endpermission --}}
                                 @permission('roles.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.roles.index') }}" class="nav-link">
+                                    <a href="{{ route('settings.roles.index') }}" class="nav-link">
                                         <i class="nav-icon fas fa-shield-alt"></i>
                                         <p>{{ __('Roles') }}</p>
                                     </a>
@@ -235,7 +235,7 @@
                                 @endpermission
                                 @permission('permissions.read')
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.permissions.index') }}" class="nav-link">
+                                    <a href="{{ route('settings.permissions.index') }}" class="nav-link">
                                         <i class="nav-icon fas fa-user-shield"></i>
                                         <p>{{ __('Permissions') }}</p>
                                     </a>
@@ -245,7 +245,7 @@
                         </li>
                         @endpermission
 
-                        <!-- <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="javascript:void(0);" id="logout-button" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>{{ __('Logout') }}</p>
@@ -253,7 +253,7 @@
                             <form id="logout-form" class="d-none" action="{{ route('logout') }}" method="POST">
                                 @csrf
                             </form>
-                        </li> -->
+                        </li> --}}
 
                     </ul>
                 </nav>

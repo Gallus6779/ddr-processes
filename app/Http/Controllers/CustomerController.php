@@ -17,7 +17,7 @@ class CustomerController extends Controller
     public function index()
     // public function index(Request $request): View | JsonResponse
     {
-        // validate_permission('customers.discounts.read');
+        // validate_permission('discounts.discounts.read');
         
         // return view('admin.customers.discounts');
     }
@@ -32,7 +32,7 @@ class CustomerController extends Controller
         // Validate permission
         try {
             validate_permission('customers.read');
-            validate_permission('settings.discounts.read');
+            validate_permission('discounts.discounts.read');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
@@ -56,7 +56,7 @@ class CustomerController extends Controller
 
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
 
-        return view('admin.customers.consumptions', compact('user'));
+        return view('admin.discounts.consumptions', compact('user'));
 
     }
 
