@@ -148,14 +148,7 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                @permission('discounts.discounts.read')
-                                <li class="nav-item">
-                                    <a href="{{ route('discounts.discounts.read') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-dollar-sign"></i>
-                                        <p>{{ __('Discounts') }}</p>
-                                    </a>
-                                </li>
-                                @endpermission
+                                
                                 @permission('discounts.consumptions.read')
                                 <li class="nav-item">
                                     <a href="{{ route('discounts.consumptions') }}" class="nav-link">
@@ -178,6 +171,14 @@
                                       <i class="nav-icon fas fa-hand-holding-usd"></i>
                                       <p>{{ __('Beneficiary of Disc.') }}</p>
                                     </a>            
+                                </li>
+                                @endpermission
+                                @permission('discounts.discounts.read')
+                                <li class="nav-item">
+                                    <a href="{{ route('discounts.discounts.read') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-dollar-sign"></i>
+                                        <p>{{ __('Discounts') }}</p>
+                                    </a>
                                 </li>
                                 @endpermission
                             </ul> 

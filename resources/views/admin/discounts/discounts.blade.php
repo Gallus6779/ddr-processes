@@ -70,7 +70,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="district_id">beneficiary of discounts  <sup class="text-danger">*</sup></label>
+                            <label for="district_id">Exceptional Customer <sup class="text-danger">*</sup></label>
                             <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" required>
                                 @foreach ($districts as $district)
                                 {{-- <option value="{{ $district->id }}" {{ old('item') == $district->id ? 'selected' : '' }}>{{ $district->name }}</option> --}}
