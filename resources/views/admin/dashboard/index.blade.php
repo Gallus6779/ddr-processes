@@ -105,83 +105,29 @@
 
                     <div class="timeline">
                     @php
-                        // $permissions = [
-                        //     ['name' => 'profile.read'],
-                        //     ['name' => 'dashboard.read'],
-                        //     ['name' => 'imports.create'],
-                        //     ['name' => 'imports.read'],
-                        //     ['name' => 'roles.create'],
-                        //     ['name' => 'roles.read'],
-                        //     ['name' => 'roles.update'],
-                        //     ['name' => 'roles.delete'],
-                        //     ['name' => 'permissions.create'],
-                        //     ['name' => 'permissions.read'],
-                        //     ['name' => 'permissions.update'],
-                        //     ['name' => 'permissions.delete'],
-                        //     ['name' => 'users.create'],
-                        //     ['name' => 'users.read'],
-                        //     ['name' => 'users.update'],
-                        //     ['name' => 'users.delete'],
-                        //     ['name' => 'profile.read'],
-                        //     ['name' => 'profile.update'],
-                        //     ['name' => 'dashboard.read'],
-                        //     ['name' => 'customers.read'],
-                        //     ['name' => 'customers.update'],
-                        //     ['name' => 'discounts.discounts.read'],
-                        //     ['name' => 'customers.discounts.update'],
-                        //     ['name' => 'customers.discounts.create'],
-                        //     ['name' => 'customers.discounts.delete'],
-                        //     ['name' => 'discounts.consumptions.create'],
-                        //     ['name' => 'discounts.consumptions.update'],
-                        //     ['name' => 'discounts.consumptions.read'],
-                        //     ['name' => 'discounts.consumptions.delete'],
-                        //     ['name' => 'discounts.discount_periods.read'],
-                        //     ['name' => 'discounts.discount_periods.create'],
-                        //     ['name' => 'settings.discount_periods.delete'],
-                        //     ['name' => 'discounts.discount_periods.update']
-                        // ];
+                        $districts = array(
+                            [
+                                'name' => 'LITTORAL OUEST SUD-OUEST',
+                                'acronym' => 'LOSO'
+                            ],
+                            [
+                                'name' => 'DISTRICT CENTRE SUD EST',
+                                'acronym' => 'DCSE'
+                            ]
+                        );
 
-                        $permissions = [
-                            'profile.read',
-                            'dashboard.read',
-                            'imports.create',
-                            'imports.read',
-                            'roles.create',
-                            'roles.read',
-                            'roles.update',
-                            'roles.delete',
-                            'permissions.create',
-                            'permissions.read',
-                            'permissions.update',
-                            'permissions.delete',
-                            'users.create',
-                            'users.read',
-                            'users.update',
-                            'users.delete',
-                            'profile.read',
-                            'profile.update',
-                            'dashboard.read',
-                            'discounts.read',
-                            'discounts.update',
-                            'discounts.discounts.read',
-                            'customers.discounts.update',
-                            'customers.discounts.create',
-                            'customers.discounts.delete',
-                            'discounts.consumptions.create',
-                            'discounts.consumptions.update',
-                            'discounts.consumptions.read',
-                            'discounts.consumptions.delete',
-                            'discounts.discount_periods.read',
-                            'discounts.discount_periods.create',
-                            'discounts.discount_periods.delete',
-                            'discounts.discount_periods.update'
-                    ];
-
-                        // var_dump($permissions);
-                        foreach($permissions as $permission){
-                            echo $permission;
-                            // \App\Models\Permission::firstOrCreate(['name' => $permission['name']], ['name' => $permission['name']]);
+                        for($i=0; $i < count($districts);$i++){
+                            var_dump($districts[$i]['name']);
                         }
+                                    // foreach($districts as $district){
+                                            
+                                            
+                                    //     \App\Models\District::firstOrCreate([
+                                    //         'name' => $district
+                                    //     ],[
+                                    //         'name' => $district
+                                    //     ]);
+                                    // }
                     @endphp
                     </div>
                 </div>

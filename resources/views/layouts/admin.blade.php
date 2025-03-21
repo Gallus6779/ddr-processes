@@ -172,6 +172,14 @@
                                     </a>            
                                 </li>
                                 @endpermission
+                                @permission('discounts.customers.read')
+                                <li class="nav-item">
+                                    <a href="{{ route('discounts.customers.read') }}" class="nav-link">
+                                      <i class="nav-icon fas fa-hand-holding-usd"></i>
+                                      <p>{{ __('Customers') }}</p>
+                                    </a>            
+                                </li>
+                                @endpermission
                                 @permission('discounts.beneficiary.read')
                                 <li class="nav-item">
                                     <a href="{{ route('discounts.beneficiary.read') }}" class="nav-link">

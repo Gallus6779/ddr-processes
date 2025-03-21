@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
     
-
+    Route::put('/customers/{customer}/{card}', [DiscountController::class, 'customers_update'])->name('discounts.customers.update');
     Route::group(['prefix' => 'discounts', 'as' => 'discounts.'], function () {
         Route::get('/discounts', [DiscountController::class, 'discount_read'])->name('discounts.read');
         Route::post('/discounts', [DiscountController::class, 'discount_create'])->name('discounts.create');
@@ -37,6 +37,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/beneficiary', [DiscountController::class, 'beneficiary_discount_read'])->name('beneficiary.read');
         Route::post('/beneficiary', [DiscountController::class, 'beneficiary_discounts_create'])->name('beneficiary.create');
         
+        Route::get('/customers', [DiscountController::class, 'customers_read'])->name('customers.read');
+        Route::post('/customers', [DiscountController::class, 'customers_create'])->name('customers.create');
+        Route::put('/customers/{id}', [DiscountController::class, 'customers_delete'])->name('customers.delete');
+        
         Route::get('/discount-periods', [DiscountController::class, 'discount_periods_read'])->name('discount_periods.read');
         Route::post('/discount-periods', [DiscountController::class, 'discount_periods_create'])->name('discount_periods.create');
         Route::put('/discount-periods/{id}', [DiscountController::class, 'discount_periods_update'])->name('discount_periods.update');
@@ -47,10 +51,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/stations', [SettingController::class, 'stations_create'])->name('stations.create');
         Route::put('/stations/{id}', [SettingController::class, 'stations_update'])->name('stations.update');
         
-        
         Route::get('/districts', [SettingController::class, 'districts_read'])->name('districts.read');
         Route::post('/districts', [SettingController::class, 'districts_create'])->name('districts.create');
-        Route::put('/districts/{id}', [SettingController::class, 'districts_update'])->name('districts.update');Route::resource('roles', RoleController::class)->except(['show']);
+        Route::put('/districts/{id}', [SettingController::class, 'districts_update'])->name('districts.update');
+        Route::resource('roles', RoleController::class)->except(['show']);
         Route::resource('permissions', PermissionController::class)->except(['show']);
         
         // Route::get('/consumptions', [CustomerController::class, 'consumptions'])->name('consumptions');
