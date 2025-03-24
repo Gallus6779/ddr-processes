@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\District;
 use App\Models\Discount;
@@ -158,38 +160,81 @@ class DiscountController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to create customer.']);
         }
+    
+        $customer = Customer::where('name', $request->name)->first();
+
+        // dump(empty($customer));
+        // dd($customer);
+
+        if(empty($customer)){
+
+            $validatedData = $request->validate([
+                'name' => ['required','string', 'unique:customers,name'],
+                'customer_type_id' => 'required|exists:customer_types,id',
+                'number' => 'required|numeric|unique:cards',
+                'card_owner' => 'required|string',
+                'email' => 'required|email|unique:customers',
+                'phone' => 'required|numeric'
+            ],[
+                'name.required' => 'Name field is required.',
+                'name.unique' => 'Name field is already taken.',
+                'email.unique' => 'Email field is already taken.',
+                'customer_type_id.required' => 'Customer Type field doesn\'t exist.',
+
+                'card_owner.required' => 'cardOwner field is required.',
+                'number.required' => 'Number field is required.',
+                'phone.required' => 'Phone field is required.',
+                'email.required' => 'Email field is required.'
+            ]);
+
+            $customer_data = $request->except(['number', 'card_owner']);
+    
+            DB::transaction(function () use ($request, $customer_data) {
+                $customer = Customer::create($customer_data);
+    
+                $card = new Card();
+    
+                $card->number = $request->number;
+                $card->card_owner = $request->card_owner;
+                $card->customer_id = $customer->id;
+    
+                $card->save();
+            });
+
+        }else{
+            $validatedData = $request->validate([
+                'name' => ['required','string'],
+                'customer_type_id' => 'required|exists:customer_types,id',
+                'number' => 'required|numeric|unique:cards',
+                'card_owner' => 'required|string'
+            ],[
+                'name.required' => 'Name field is required.',
+                'card_owner.required' => 'cardOwner field is required.',
+                'number.required' => 'Number field is required.',
+                'phone.required' => 'Phone field is required.',
+                
+                'customer_type_id.required' => 'Customer Type field doesn\'t exist.'
+            ]);
+
+            // $customer_data = $request->except(['number', 'card_owner']);
+    
+            // DB::transaction(function () use ($request, $customer_data) {
+            DB::transaction(function () use ($request, $customer) {
+                // $customer = Customer::create($customer_data);
+    
+                $card = new Card();
+    
+                $card->number = $request->number;
+                $card->card_owner = $request->card_owner;
+                $card->customer_id = $customer->id;
+    
+                $card->save();
+            });
+            return back()->with('success', 'Customer ' . $customer->name . ' card has been added successfully.');
+        }
+
         
-        $validatedData = $request->validate([
-            'name' => 'required|string|unique:customers',
-            'customer_type_id' => 'required|exists:customer_types,id',
-            'number' => 'required|numeric|unique:cards',
-            'card_owner' => 'required|string',
-            'email' => 'nullable|email|unique:customers',
-            'phone' => 'required|numeric'
-        ],[
-            'name.required' => 'Name field is required.',
-            'customer_type_id.required' => 'Customer Type field is required.',
-            'name.unique' => 'Name field is already taken.',
-            'email.unique' => 'Email field is already taken.',
-            'customer_type_id.required' => 'Customer Type field doesn\'t exist.'
-        ]);
-
-        $customer_data = $request->except(['number', 'card_owner']);
-
-        DB::transaction(function () use ($request, $customer_data) {
-            $customer = Customer::create($customer_data);
-
-            $card = new Card();
-
-            $card->number = $request->number;
-            $card->card_owner = $request->card_owner;
-            $card->customer_id = $customer->id;
-
-            $card->save();
-        });
         
-        
-        return back()->with('success', 'Customer created successfully.');
     }
 
     /**
@@ -202,41 +247,32 @@ class DiscountController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to update customer.']);
         }
-        dump($card);
-        dd($customer);
+        
         $validatedData = $request->validate([
-            'name' => 'required|string|unique:customers',
+            'name' => ['required', 'string', Rule::unique('customers')->ignore($customer->id)],
             'customer_type_id' => 'required|exists:customer_types,id',
-            'number' => 'required|numeric|unique:cards',
+            'number' => ['required', 'numeric', Rule::unique('cards')->ignore($card->id)],
             'card_owner' => 'required|string',
-            'email' => 'nullable|email|unique:customers',
-            'phone' => 'required|numeric'
+            'email' => ['required', 'email', Rule::unique('customers')->ignore($customer->id)],
+            'phone' => 'required|numeric' 
         ],[
             'name.required' => 'Name field is required.',
             'customer_type_id.required' => 'Customer Type field is required.',
             'name.unique' => 'Name field is already taken.',
             'email.unique' => 'Email field is already taken.',
             'customer_type_id.required' => 'Customer Type field doesn\'t exist.'
-        ]);
+        ]); 
 
         $customer_data = $request->except(['number', 'card_owner']);
 
-        $card = Card::where();
+        $card_data = $request->only(['number', 'card_owner']);
 
-        $card->number = $request->number;
-        $card->card_owner = $request->card_owner;
-        $card->customer_id = $customer->id;
-
-        $card->save();
-        DB::transaction(function () use ($request, $customer) {
-            $customer->update($request->except(['number', 'card_owner']));
-
-            
+        DB::transaction(function () use ($request, $customer, $card, $customer_data, $card_data ) {
+            $customer->update($customer_data);
+            $card->update($card_data);
         });
 
-        return back()
-            ->with('success', 'Customer has been updated successfully.');
-        
+        return back()->with('success', 'Customer has been updated successfully.');        
     }
     
     /**

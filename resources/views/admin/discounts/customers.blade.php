@@ -151,6 +151,8 @@
                     <tr>
                         <th>{{ __('Name') }} </th>
                         <th>{{ __('CustomerType') }}</th>
+                        <th>{{ __('Email') }}</th>
+                        <th>{{ __('Phone') }}</th>
                         <th>{{ __('CardNumber') }}</th>
                         <th>{{ __('CardOwner') }}</th>
                         <th>Actions </th>
@@ -162,6 +164,8 @@
                             <tr>
                                 <td>{{ $customer->name }}</td>
                                 <td>{{ $customer->customer_type->name }}</td>
+                                <td>{{ $customer->email }}</td>
+                                <td>{{ $customer->phone }}</td> 
                                 <td>{{ $card->number }}</td>
                                 <td>{{ $card->card_owner }}</td> 
                                 <td>
@@ -262,6 +266,8 @@
                     <tr>
                         <th>{{ __('Name') }} </th>
                         <th>{{ __('CustomerType') }}</th>
+                        <th>{{ __('Email') }}</th>
+                        <th>{{ __('Phone') }}</th>
                         <th>{{ __('CardNumber') }}</th>
                         <th>{{ __('CardOwner') }}</th>
                         <th>Actions </th>
