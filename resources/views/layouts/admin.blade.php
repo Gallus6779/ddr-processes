@@ -8,7 +8,6 @@
     <title>@yield('title') - {{ config('app.name') }}</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-
     @vite(['resources/css/app.css'])
     @stack('styles')
 </head>
@@ -288,7 +287,59 @@
     </script>
 
     @vite(['resources/js/app.js'])
+
     @stack('scripts')
+
+    @push('scripts')
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Gestionnaire d'événement pour ouvrir la modal
+        document.querySelectorAll("[data-toggle='modal']").forEach(function(trigger) {
+            trigger.addEventListener("click", function(e) {
+                e.preventDefault();
+                var targetSelector = trigger.getAttribute("data-target");
+                var modal = document.querySelector(targetSelector);
+                if(modal){
+                    modal.style.display = "block";
+                    modal.classList.add("show");
+
+                    // Créez un arrière-plan personnalisé
+                    var backdrop = document.createElement("div");
+                    backdrop.className = "custom-modal-backdrop";
+                    backdrop.style.position = "fixed";
+                    backdrop.style.top = "0";
+                    backdrop.style.left = "0";
+                    backdrop.style.width = "100%";
+                    backdrop.style.height = "100%";
+                    backdrop.style.backgroundColor = "rgba(0,0,0,0.5)";
+                    backdrop.style.zIndex = "1040";
+                    document.body.appendChild(backdrop);
+
+                    // Fermeture de la modal lorsque l'on clique sur un bouton avec data-dismiss="modal"
+                    modal.querySelectorAll("[data-dismiss='modal']").forEach(function(btn) {
+                        btn.addEventListener("click", function(){
+                            modal.style.display = "none";
+                            modal.classList.remove("show");
+                            if(backdrop){
+                                backdrop.remove();
+                            }
+                        });
+                    });
+
+                    // Fermeture de la modal lorsque l'on clique en dehors du contenu
+                    modal.addEventListener("click", function(e){
+                        if(e.target === modal) {
+                            modal.style.display = "none";
+                            modal.classList.remove("show");
+                            if(backdrop){ backdrop.remove(); }
+                        }
+                    });
+                }
+            });
+        });
+    });
+    </script>
+    @endpush
 
 </body>
 

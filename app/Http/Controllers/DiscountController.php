@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\District;
 use App\Models\Discount;
 use App\Models\DiscountPeriod;
+use App\Models\Consumption;
 
 class DiscountController extends Controller
 {
@@ -19,12 +20,12 @@ class DiscountController extends Controller
     }
 
     /**
-     * 
+     *
      */
     public function discount_read(Request $request){
 
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-        
+
         // Validate permission
         try {
             validate_permission('discounts.read');
@@ -46,7 +47,7 @@ class DiscountController extends Controller
     }
 
     /**
-     * 
+     *
      */
     public function discount_periods_read(Request $request){
 
@@ -58,14 +59,14 @@ class DiscountController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
-        
+
         // Fetch districts with related models
         // try {
             // dd(1);
             $discount_periods = DiscountPeriod::latest()->with('createdBy', 'validatedBy')->paginate(10);
             // dd(1);
             $districts = District::get();
-            
+
             return view('admin.discounts.periods', compact('discount_periods', 'districts', 'user'));
         // } catch (\Exception $e) {
         //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
@@ -73,7 +74,7 @@ class DiscountController extends Controller
     }
 
     /**
-     * 
+     *
      */
     public function discount_create(Request $request){
         validate_permission('discounts.discounts.create');
@@ -81,23 +82,27 @@ class DiscountController extends Controller
         dd($request);
     }
     /**
-     * 
+     *
      */
     public function consumptions(Request $request){
 
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
 
-        return view('admin.discounts.consumptions', compact('user'));
+        $consumptions = Consumption::with(['customer', 'card.station'])
+            ->orderBy('date_consumption', 'desc')
+            ->paginate(10);
+
+        return view('admin.discounts.consumptions', compact('user', 'consumptions'));
 
     }
 
     /**
-     * 
+     *
      */
     public function beneficiary_discount_read(Request $request){
 
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-        
+
         // Validate permission
         try {
             validate_permission('discounts.read');

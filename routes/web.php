@@ -9,6 +9,7 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Admin\ImportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ConsumptionController;
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -23,6 +24,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/imports', [ImportController::class, 'index'])->name('imports.index');
         Route::post('/imports', [ImportController::class, 'store'])->name('imports.store');
         Route::post('/imports/customers', [ImportController::class, 'storeCustomers'])->name('imports.customers.store');
+        Route::post('/consumptions/import', [ConsumptionController::class, 'import'])->name('consumptions.import');
+        Route::get('/consumptions', [ConsumptionController::class, 'index'])->name('consumptions.index');
     });
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
