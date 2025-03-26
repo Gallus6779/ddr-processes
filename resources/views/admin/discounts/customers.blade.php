@@ -55,7 +55,59 @@
                 <a href="#" class="mt-3 mb-3 btn btn-primary float-right" data-toggle="modal" data-target="#modal-default">
                     <i class="fas fa-plus mr-1"></i>
                     {{ __('Add a customer') }}
+                </a> 
+                
+                <a href="#" class="mt-3 mb-3 mr-1 btn btn-warning float-right" data-toggle="modal" data-target="#import-customer">
+                    <i class="fas fa-upload mr-1"></i>
+                    {{ __('Import customers') }}
                 </a>
+
+                <div class="modal fade" id="import-customer">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">{{ __('Import customers list') }}</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            
+                            <form method="post" action="{{ route('discounts.customers.create')}}" enctype="multipart/form-data">                                
+                                @csrf
+                                <div class="modal-body card-body row">
+                                    <div class="form-group col-12">
+                                        <label for="filename">{{ __('Import file') }}  <sup class="text-danger">*</sup></label>
+                                        <input id="filename" class="form-control @error('filename') is-invalid @enderror" value="{{ old('filename') }}" type="file" name="filename" placeholder="Click to import" required>
+                                        @error('filename')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                        <ion-icon name="close-circle-outline"></ion-icon>
+                                        <i class="fas-solid fa-xmark"></i>
+                                        <i class="fass fa-xmark"></i>
+                                        {{ __('Cancel') }} 
+                                    </button>
+                                    <button type="button" class="btn btn-warning">
+                                        <i class="fas fa-download mr-1"></i>
+                                        {{ __('Download template') }} 
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-upload mr-1"></i>
+                                        {{ __('Import') }} 
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+
                 <div class="modal fade" id="modal-default">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
@@ -76,8 +128,8 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="customer_type_id">{{ __('Customer Type') }}  <sup class="text-danger">*</sup></label>
-                                        <select class="form-control @error('customer_type_id') is-invalid @enderror" style="width: 100%;" name="customer_type_id" id="customer_type_id" required>
+                                        <label for="customer_type_id">{{ __('Customer Type') }}</label>
+                                        <select class="form-control @error('customer_type_id') is-invalid @enderror" style="width: 100%;" name="customer_type_id" id="customer_type_id">
                                             @foreach ($customer_types as $customer_type)
                                             <option value="{{ $customer_type->id }}" {{ (old('customer_type_id') == $customer_type->id) ? 'selected' : '' }}>{{ $customer_type->name }}</option>
                                             @endforeach
@@ -99,15 +151,15 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="email">{{ __('Customer Email') }}  <sup class="text-danger">*</sup></label>
+                                        <label for="email">{{ __('Customer Email') }}  </label>
                                         <input id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" type="email" name="email" placeholder="username@example.com">
                                         @error('email')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="phone">{{ __('Customer Phone') }}  <sup class="text-danger">*</sup></label>
-                                        <input id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" type="tel" name="phone" placeholder="Neptune OIL" required>
+                                        <label for="phone">{{ __('Customer Phone') }} </label>
+                                        <input id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" type="tel" name="phone" placeholder="Neptune OIL" reired>
                                         @error('phone')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -202,8 +254,8 @@
                                                         @enderror
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="customer_type_id">{{ __('Customer Type') }}  <sup class="text-danger">*</sup></label>
-                                                        <select class="form-control @error('customer_type_id') is-invalid @enderror" style="width: 100%;" name="customer_type_id" id="customer_type_id" required>
+                                                        <label for="customer_type_id">{{ __('Customer Type') }} </label>
+                                                        <select class="form-control @error('customer_type_id') is-invalid @enderror" style="width: 100%;" name="customer_type_id" id="customer_type_id" >
                                                             @foreach ($customer_types as $customer_type)
                                                             <option value="{{ $customer_type->id }}" {{ $customer->customer_type_id == $customer_type->id | (old('customer_type_id') == $customer_type->id) ? 'selected' : '' }}>{{ $customer_type->name }}</option>
                                                             @endforeach
@@ -224,15 +276,15 @@
                                                         @enderror
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="email">{{ __('Customer Email') }}  <sup class="text-danger">*</sup></label>
-                                                        <input id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $customer->email) }}" type="email" name="email" placeholder="username@example.com" required>
+                                                        <label for="email">{{ __('Customer Email') }}  </label>
+                                                        <input id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $customer->email) }}" type="email" name="email" placeholder="username@example.com">
                                                         @error('email')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label for="phone">{{ __('Customer Phone') }}  <sup class="text-danger">*</sup></label>
-                                                        <input id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $customer->phone) }}" type="tel" name="phone" placeholder="Neptune OIL" required>
+                                                        <label for="phone">{{ __('Customer Phone') }} </label>
+                                                        <input id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $customer->phone) }}" type="tel" name="phone" placeholder="Neptune OIL" >
                                                         @error('phone')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
