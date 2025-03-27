@@ -140,12 +140,14 @@ class DiscountController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view customers.']);
         }
-
+// dd(1);
         // Fetch districts with related models
         try {
-            $customers = Customer::get();
+            $customers = Customer::orderBy('id')->get();
             $customer_types = CustomerType::get();
 
+            // dump($customer_types);
+            // dd($customers);
             return view('admin.discounts.customers', compact('customers', 'customer_types', 'user'));
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);

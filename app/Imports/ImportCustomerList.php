@@ -116,7 +116,12 @@ class ImportCustomerList implements ToCollection, WithHeadingRow, WithValidation
             try {
                 $spreadsheet = IOFactory::load($inputFileName);
                 $worksheet = $spreadsheet->getActiveSheet();
+                // dd($worksheet);
                 $rows = $worksheet->toArray();
+
+                //Retrieve the first line
+                array_shift($rows);
+                $line = 1;
                 
                 foreach ($rows as $row) {
                     // if(is_null($row[0])){
@@ -125,25 +130,6 @@ class ImportCustomerList implements ToCollection, WithHeadingRow, WithValidation
                     
                     $customer = Customer::where('name', $row[0])->first();
                     if(empty($customer)){
-    
-                        // $validatedData = $request->validate([
-                        //     'name' => ['required','string', 'unique:customers,name'],
-                        //     'customer_type_id' => 'required|exists:customer_types,id',
-                        //     'number' => 'required|numeric|unique:cards',
-                        //     'card_owner' => 'required|string',
-                        //     'email' => 'required|email|unique:customers',
-                        //     'phone' => 'required|numeric'
-                        // ],[
-                        //     'name.required' => 'Name field is required.',
-                        //     'name.unique' => 'Name field is already taken.',
-                        //     'email.unique' => 'Email field is already taken.',
-                        //     'customer_type_id.required' => 'Customer Type field doesn\'t exist.',
-            
-                        //     'card_owner.required' => 'cardOwner field is required.',
-                        //     'number.required' => 'Number field is required.',
-                        //     'phone.required' => 'Phone field is required.',
-                        //     'email.required' => 'Email field is required.'
-                        // ]);
 
                         // $companyName = $row[0];
                         // $customerType = $row[1];
@@ -157,7 +143,6 @@ class ImportCustomerList implements ToCollection, WithHeadingRow, WithValidation
                             'phone' => $row[3]
                         ];
                 
-                        // DB::transaction(function () use ($request, $customer_data, $row) {
                         DB::beginTransaction();
                         try {
                             $customer = Customer::create($customer_data);
@@ -174,29 +159,15 @@ class ImportCustomerList implements ToCollection, WithHeadingRow, WithValidation
                             // Commit the transaction
                             DB::commit();
 
-                            // return back()->with('success', 'Customer ' . $customer->name . ' card has been added successfully.');
                         } catch (\Exception $e) {
                             // Rollback the transaction
                             DB::rollBack();
                 
                             // return redirect()->back()->withErrors(['error' => 'Transaction failed', 'message' => $e->getMessage()]);
-                            return response()->json(['error' => 'Transaction failed', 'message' => $e->getMessage()], 500);
+                            return response()->json(['error' => 'Transaction failed', 'line' => 'line : ' . $line, 'message' => $e->getMessage()], 500);
                         }
                     }else{
-                        // $validatedData = $request->validate([
-                        //     'name' => ['required','string'],
-                        //     'customer_type_id' => 'required|exists:customer_types,id',
-                        //     'number' => 'required|numeric|unique:cards',
-                        //     'card_owner' => 'required|string'
-                        // ],[
-                        //     'name.required' => 'Name field is required.',
-                        //     'card_owner.required' => 'cardOwner field is required.',
-                        //     'number.required' => 'Number field is required.',
-                        //     'phone.required' => 'Phone field is required.',
-                            
-                        //     'customer_type_id.required' => 'Customer Type field doesn\'t exist.'
-                        // ]);
-            
+                                    
                         DB::beginTransaction();
                         try {
 
@@ -211,23 +182,18 @@ class ImportCustomerList implements ToCollection, WithHeadingRow, WithValidation
                             // Commit the transaction
                             DB::commit();
 
-                            // return response()->json(['success' => 'Customer ' . $customer->name . ' card has been added successfully.'], 200);
-                            // return back()->with('success', 'Customer ' . $customer->name . ' card has been added successfully.');
-
                         } catch (\Exception $e) {
                             // Rollback the transaction
                             DB::rollBack();
                             
-                            return response()->json(['error' => 'Transaction failed', 'message' => $e->getMessage()], 500);
-                
-                            // return redirect()->back()->withErrors(['error' => 'Transaction failed', 'message' => $e->getMessage()]);
+                            return response()->json(['error' => 'Transaction failed', 'line : ' => $line, 'message' => $e->getMessage()], 500);
                         }
                     }
+
+                    $line++;
                 }
                 return response()->json(['success' => 'Customer ' . $customer->name . ' card has been added successfully.'], 200);
         
-                // return $file;
-
             } catch (Exception $e) {
                 return die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . $e->getMessage());
             }
