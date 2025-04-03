@@ -11,7 +11,8 @@ class Card extends Model
 
     protected $fillable = [
         'customer_id',
-        'number'
+        'number',
+        'card_owner'
     ];
 
     /**

@@ -54,6 +54,12 @@ class PermissionSeeder extends Seeder
                 'discounts.discount_periods.create',
                 'discounts.discount_periods.delete',
                 'discounts.discount_periods.update',
+                
+                'discounts.customers.read',
+                'discounts.customers.create',
+                'discounts.customers.update',
+                'discounts.customers.delete',
+
                 'settings.districts.create',
                 'settings.districts.read',
                 'settings.districts.update',

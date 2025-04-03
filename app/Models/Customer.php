@@ -4,17 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'firstname',
-        'lastname',
+        'name',
+        'customer_type_id',
         'email',
-        'phone',
-        'customer_type_id'
+        'phone'
     ];
 
     /**
@@ -22,9 +23,9 @@ class Customer extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function customer_type(): HasOne
+    public function customer_type(): BelongsTo
     {
-        return $this->hasOne(CustomerType::class);
+        return $this->belongsTo(CustomerType::class, 'customer_type_id');
     }
 
     /**
