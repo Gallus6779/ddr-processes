@@ -124,6 +124,7 @@
                             <th> {{ __('Acronym') }}</th>
                             <th>{{ __('Created By') }} </th>
                             <th>{{ __('Validated By') }} </th>
+                            <th>{{ __('status') }} </th>
                             <th>Actions </th>
                         </tr>
                     </thead>
@@ -134,7 +135,9 @@
                             <td>{{ $district->acronym }}</td>
                             <td>{{ $district->createdBy->name }}</td>
                             <td>{{ $district->validatedBy->name }}</td>
+                            <td>{{ $district->status }}</td>
                             <td>
+                                @if($district->status==1)
 
                                 @permission('settings.districts.update')
                                 <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#district-edit{{$district->id}}">
@@ -143,10 +146,18 @@
                                 @endpermission
                                 
                                 @permission('settings.districts.delete')
-                                <button type="button" class="btn btn-danger">
+                                
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#district-delete{{$district->id}}">
                                     <i class="fas fa-trash-alt"></i> Delete
-                                </button>
+                                </button>                                
                                 @endpermission
+
+                                @elseif($district->status==0)
+                                <span class="badge badge-pill badge-warning"> Delated !</span>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#district-restore{{$district->id}}">
+                                <i class="fas fa-undo"></i> Restore ?
+                                </button>
+                                @endif
 
                                 <div class="modal fade" id="district-edit{{$district->id}}">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -196,6 +207,101 @@
                                     </div>
                                     <!-- /.modal-dialog -->
                                 </div>
+<!--  Modal used to delete a district -->
+                                <div class="modal fade" id="district-delete{{$district->id}}">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">{{ __('Do you want to delete this District ?') }}</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="post" action="{{ route('settings.districts.delete', $district->id)}}">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-body card-body row">
+                                                    <div class="form-group col-md-12">
+                                                        <label for="name">{{ __('Name') }} <sup class="text-danger">*</sup></label>
+                                                        <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $district->name) }}" type="text" name="name" placeholder="District Centre-Sud-Est" disabled>
+                                                        @error('name')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label for="acronym">{{ __('Acronym') }} <sup class="text-danger">*</sup></label>
+                                                        <input id="acronym" class="form-control @error('acronym') is-invalid @enderror" value="{{ old('acronym', $district->acronym) }}" type="text" name="acronym" placeholder="DCSE" disabled>
+                                                        @error('acronym')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                    <!-- /.form-group -->
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                                                        <ion-icon name="close-circle-outline"></ion-icon>
+                                                        
+                                                        {{ __('Cancel') }} 
+                                                    </button>
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
+                                                        {{ __('Delete') }} 
+                                                    </button>
+                                                </div>
+                                            </form>
+                
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+<!-- END Modal used to delete a district -->
+
+<!--  Modal used to restore a district -->
+<div class="modal fade" id="district-restore{{$district->id}}">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">{{ __('Do you want to restore this District ?') }}</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="post" action="{{ route('settings.districts.restore', $district->id)}}">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-body card-body row">
+                                                    <div class="form-group col-md-12">
+                                                        <label for="name">{{ __('Name') }} <sup class="text-danger">*</sup></label>
+                                                        <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $district->name) }}" type="text" name="name" placeholder="District Centre-Sud-Est" disabled>
+                                                        
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label for="acronym">{{ __('Acronym') }} <sup class="text-danger">*</sup></label>
+                                                        <input id="acronym" class="form-control @error('acronym') is-invalid @enderror" value="{{ old('acronym', $district->acronym) }}" type="text" name="acronym" placeholder="DCSE" disabled>
+                                                        
+                                                    </div>
+                                                    <!-- /.form-group -->
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                                                        <ion-icon name="close-circle-outline"></ion-icon>
+                                                        
+                                                        {{ __('Cancel') }} 
+                                                    </button>
+                                                    <button type="submit" class="btn btn-success">
+                                                        <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
+                                                        {{ __('Restore') }} 
+                                                    </button>
+                                                </div>
+                                            </form>
+                
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+<!-- END Modal used to restore a district -->
                             </td>
                         </tr>
                         @endforeach

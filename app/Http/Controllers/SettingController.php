@@ -29,7 +29,7 @@ class SettingController extends Controller
         // Fetch districts with related models
         try {
             $stations = Station::latest()->with('createdBy', 'validatedBy')->paginate(10);
-            $districts = District::get();
+            $districts = District::where('status', 1)->get();
 
             return view('admin.station-services.index', compact('stations','districts','user'));
         } catch (\Exception $e) {
@@ -284,6 +284,7 @@ class SettingController extends Controller
         // Fetch districts with related models
         try {
             $districts = District::latest()->with('createdBy', 'validatedBy')->paginate(10);
+            // $districts = District::where('status', 1)->latest()->with('createdBy', 'validatedBy')->paginate(10);
 
             // dd($districts);
             return view('admin.districts.index', compact('districts', 'user'));
@@ -353,6 +354,48 @@ class SettingController extends Controller
         $district->update($validatedData);
         // dd($district);
         return back()->with('success', 'District updated successfully.');
+    }
+
+    public function districts_delete(Request $request, $id){
+        
+        $district = District::findOrFail($id);
+
+        // Validate permission
+        try {        
+            validate_permission('settings.districts.update');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'You do not have permission to update districts.']);
+        }
+
+        $user_id = auth()->user()->id;
+        $validatedData = [ 
+            "status" => 0
+        ];
+        
+        $district->update($validatedData);
+        // dd($district);
+        return back()->with('success', 'District delated successfully.');
+    }
+
+    public function districts_restore(Request $request, $id){
+        
+        $district = District::findOrFail($id);
+
+        // Validate permission
+        try {        
+            validate_permission('settings.districts.update');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'You do not have permission to update districts.']);
+        }
+
+        $user_id = auth()->user()->id;
+        $validatedData = [ 
+            "status" => 1
+        ];
+        
+        $district->update($validatedData);
+        // dd($district);
+        return back()->with('success', 'District restored successfully.');
     }
 
     /**

@@ -54,6 +54,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/districts', [SettingController::class, 'districts_read'])->name('districts.read');
         Route::post('/districts', [SettingController::class, 'districts_create'])->name('districts.create');
         Route::put('/districts/{id}', [SettingController::class, 'districts_update'])->name('districts.update');
+        Route::put('/districts/{id}/delete', [SettingController::class, 'districts_delete'])->name('districts.delete');
+        Route::put('/districts/{id}/restore', [SettingController::class, 'districts_restore'])->name('districts.restore');
         Route::resource('roles', RoleController::class)->except(['show']);
         Route::resource('permissions', PermissionController::class)->except(['show']);
         

@@ -14,6 +14,7 @@ class District extends Model
     protected $fillable = [
         'name',
         'acronym',
+        'status',
         'created_by',
         'validated_by'
     ];

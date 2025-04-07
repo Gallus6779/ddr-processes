@@ -45,7 +45,7 @@ class DiscountController extends Controller
         try {
             $discounts = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
             $discount_periods = DiscountPeriod::get();
-            $districts = District::get();
+            $districts = District::where('status', 1)->get();
 
             return view('admin.discounts.discounts', compact('discounts', 'discount_periods', 'districts', 'user'));
         } catch (\Exception $e) {
@@ -72,7 +72,7 @@ class DiscountController extends Controller
             // dd(1);
             $discount_periods = DiscountPeriod::latest()->with('createdBy', 'validatedBy')->paginate(10);
             // dd(1);
-            $districts = District::get();
+            $districts = District::where('status', 1)->get();
             
             return view('admin.discounts.periods', compact('discount_periods', 'districts', 'user'));
         // } catch (\Exception $e) {
@@ -118,7 +118,7 @@ class DiscountController extends Controller
         try {
             $discounts = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
             $discount_periods = DiscountPeriod::get();
-            $districts = District::get();
+            $districts = District::where('status', 1)->get();
 
             return view('admin.discounts.beneficiary', compact('discounts', 'discount_periods', 'districts', 'user'));
         } catch (\Exception $e) {
