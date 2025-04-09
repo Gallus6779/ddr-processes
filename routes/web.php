@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/stations', [SettingController::class, 'station_read'])->name('stations.read');
         Route::post('/stations', [SettingController::class, 'stations_create'])->name('stations.create');
         Route::put('/stations/{id}', [SettingController::class, 'stations_update'])->name('stations.update');
+        Route::put('/stations/{id}/delete', [SettingController::class, 'stations_delete'])->name('stations.delete');
+        Route::put('/stations/{id}/restore', [SettingController::class, 'stations_restore'])->name('stations.restore');
         
         Route::get('/districts', [SettingController::class, 'districts_read'])->name('districts.read');
         Route::post('/districts', [SettingController::class, 'districts_create'])->name('districts.create');

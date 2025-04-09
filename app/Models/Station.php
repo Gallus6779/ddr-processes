@@ -14,6 +14,7 @@ class Station extends Model
     protected $fillable = [
         'name',
         'district_id',
+        'status',
         'created_by',
         'validated_by'
     ];

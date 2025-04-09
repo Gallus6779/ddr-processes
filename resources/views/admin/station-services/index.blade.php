@@ -135,7 +135,7 @@
                         <td>{{ $station->createdBy->name }}</td>
                         <td>{{ $station->validatedBy->name }}</td>
                         <td>
-
+                        @if($station->status==1)
                             @permission('settings.stations.update')
                             <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#station-edit{{$station->id}}">
                                 <i class="fas fa-edit"></i> Update
@@ -143,10 +143,18 @@
                             @endpermission
                             
                             @permission('settings.stations.delete')
-                            <button type="button" class="btn btn-danger">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#station-delete{{$station->id}}">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </button>
                             @endpermission
+
+                        @elseif($station->status==0)
+                            <span class="badge badge-pill badge-warning"> Deleted !</span>
+                            <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#station-restore{{$station->id}}">
+                            
+                            <i class="fas fa-undo"></i> Restore ?
+                            </button>
+                        @endif
 
                             <div class="modal fade" id="station-edit{{$station->id}}">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -197,6 +205,104 @@
                                 </div>
                                 <!-- /.modal-dialog -->
                             </div>
+
+                            <!-- Modal For Soft delete  -->
+                            <div class="modal fade" id="station-delete{{$station->id}}">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">{{ __('Do you want to delete this Station ?') }}</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="post" action="{{ route('settings.stations.delete', $station->id)}}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body card-body row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="name">{{ __('Name') }} <sup class="text-danger">*</sup></label>
+                                                    <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $station->name) }}" type="text" name="name" disabled>
+                                                    </div>
+                                                <div class="form-group col-md-12">
+                                                    <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                                                    <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" disabled>
+                                                        @foreach ($districts as $district)
+                                                        <option value="{{ $district->id }}" {{ ($station->district->id == $district->id | old('item') == $district->id) ? 'selected' : '' }}>{{ $district->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <!-- /.form-group -->
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                                                    <ion-icon name="close-circle-outline"></ion-icon>
+                                                    <i class="fas-solid fa-xmark"></i>
+                                                    <i class="fass fa-xmark"></i>
+                                                    {{ __('Cancel') }} 
+                                                </button>
+                                                <button type="submit" class="btn btn-danger">
+                                                    <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
+                                                    {{ __('Delete') }} 
+                                                </button>
+                                            </div>
+                                        </form>
+            
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- End Modal for soft delete -->
+
+                            <!-- Modal For Soft delete  -->
+                            <div class="modal fade" id="station-restore{{$station->id}}">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">{{ __('Do you want to Restore this Station ?') }}</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="post" action="{{ route('settings.stations.restore', $station->id)}}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body card-body row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="name">{{ __('Name') }} <sup class="text-danger">*</sup></label>
+                                                    <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $station->name) }}" type="text" name="name" disabled>
+                                                    </div>
+                                                <div class="form-group col-md-12">
+                                                    <label for="district_id">District  <sup class="text-danger">*</sup></label>
+                                                    <select class="form-control @error('name') is-invalid @enderror" style="width: 100%;" name="district_id" id="district_id" disabled>
+                                                        @foreach ($districts as $district)
+                                                        <option value="{{ $district->id }}" {{ ($station->district->id == $district->id | old('item') == $district->id) ? 'selected' : '' }}>{{ $district->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <!-- /.form-group -->
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                                    <ion-icon name="close-circle-outline"></ion-icon>
+                                                    <i class="fas-solid fa-xmark"></i>
+                                                    <i class="fass fa-xmark"></i>
+                                                    {{ __('Cancel') }} 
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
+                                                    {{ __('Restore') }} 
+                                                </button>
+                                            </div>
+                                        </form>
+            
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- End Modal for soft delete -->
                         </td>
                     </tr>
                     @endforeach

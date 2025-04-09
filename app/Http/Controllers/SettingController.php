@@ -103,6 +103,48 @@ class SettingController extends Controller
         return back()->with('success', 'Station updated successfully.');
     }
 
+    public function stations_delete(Request $request, $id){
+        
+        $station = Station::findOrFail($id);
+
+        // Validate permission
+        try {        
+            validate_permission('settings.stations.update');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
+        }
+
+        $user_id = auth()->user()->id;
+        $validatedData = [ 
+            "status" => 0
+        ];
+        
+        $station->update($validatedData);
+        // dd($district);
+        return back()->with('success', 'Station deleted successfully.');
+    }
+
+    public function stations_restore(Request $request, $id){
+        
+        $station = Station::findOrFail($id);
+
+        // Validate permission
+        try {        
+            validate_permission('settings.stations.update');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
+        }
+
+        $user_id = auth()->user()->id;
+        $validatedData = [ 
+            "status" => 1
+        ];
+        
+        $station->update($validatedData);
+        // dd($district);
+        return back()->with('success', 'Station restored successfully.');
+    }
+
     /**
      * 
      */
@@ -373,7 +415,6 @@ class SettingController extends Controller
         ];
         
         $district->update($validatedData);
-        // dd($district);
         return back()->with('success', 'District delated successfully.');
     }
 
@@ -394,7 +435,6 @@ class SettingController extends Controller
         ];
         
         $district->update($validatedData);
-        // dd($district);
         return back()->with('success', 'District restored successfully.');
     }
 
