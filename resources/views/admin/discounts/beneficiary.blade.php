@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
-  
+
   <style>
     div.dt-container div.row:last-child{
         display:none;
@@ -47,7 +47,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h5><i class="icon fas fa-check"></i> Alert!</h5>
                     {{ session('success') }}
-                </div>      
+                </div>
             @endif
         </div>
         <div class="col-6"></div>
@@ -91,8 +91,8 @@
                                     <div class="form-group col-md-6">
                                         <label for="cardnumber">{{ __('CardNumber') }} </label>
                                         <input id="cardnumber" class="form-control" type="number" name="cardnumber">
-                                    </div>                                    
-                                    
+                                    </div>
+
                                     <!-- /.form-group -->
                                 </div>
                                 <div class="modal-footer justify-content-between">
@@ -100,11 +100,11 @@
                                         <ion-icon name="close-circle-outline"></ion-icon>
                                         <i class="fas-solid fa-xmark"></i>
                                         <i class="fass fa-xmark"></i>
-                                        {{ __('Cancel') }} 
+                                        {{ __('Cancel') }}
                                     </button>
                                     <button type="button" class="btn btn-primary">
                                         <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
-                                        {{ __('Save') }} 
+                                        {{ __('Save') }}
                                     </button>
                                 </div>
                             </form>
@@ -117,10 +117,156 @@
             @endpermission
         </div>
     </div>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Calcul automatique des ristournes</h5>
+            <small class="text-muted">5 FCFA par litre</small>
+        </div>
+        <div class="card-body">
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+
+            <?php
+            // Vérifier si au moins une période de ristourne existe
+            if ($discount_periods->isEmpty()) {
+                echo '<div class="alert alert-warning">Aucune période de ristourne n\'est disponible. Veuillez en créer une d\'abord.</div>';
+                echo '<a href="'.route('discounts.discount_periods.create').'" class="btn btn-warning">Gérer les périodes de ristourne</a>';
+            } else {
+                // Afficher les formulaires de calcul de ristourne
+            ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Calculer pour une consommation spécifique</h6>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('discounts.calculate') }}" method="POST">
+                                @csrf
+                                <div class="form-group mb-3">
+                                    <label for="consumption_id" class="form-label">Sélectionner une consommation</label>
+                                    <select name="consumption_id" id="consumption_id" class="form-select form-control">
+                                        @php
+                                            try {
+                                                $consumptionsWithoutDiscount = \App\Models\Consumption::whereDoesntHave('discount')
+                                                    ->whereNotNull('card_id')  // Ajouter cette condition
+                                                    ->with('customer', 'card')
+                                                    ->latest()
+                                                    ->get();
+                                            } catch (\Exception $e) {
+                                                $consumptionsWithoutDiscount = collect();
+                                            }
+                                        @endphp
+
+                                        @forelse($consumptionsWithoutDiscount as $consumption)
+                                            <option value="{{ $consumption->id }}">
+                                                {{ $consumption->customer->name ?? 'Client inconnu' }} -
+                                                Carte: {{ $consumption->card->card_number ?? 'N/A' }} -
+                                                {{ $consumption->quantity }} litres ({{ $consumption->quantity * 5 }} FCFA)
+                                            </option>
+                                        @empty
+                                            <option disabled>Aucune consommation disponible avec carte</option>
+                                        @endforelse
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="period_discount_id" class="form-label">Période de ristourne</label>
+                                    <select name="period_discount_id" id="period_discount_id" class="form-select form-control" required>
+                                        @foreach($discount_periods as $period)
+                                            <option value="{{ $period->id }}">{{ $period->name ?? 'Période '.$period->id }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Calculer la ristourne</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Calculer toutes les ristournes en attente</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    @php
+                                        try {
+                                            $countConsumptionsWithoutDiscount = \App\Models\Consumption::whereDoesntHave('discount')
+                                                ->whereNotNull('card_id')  // Ajouter cette condition
+                                                ->count();
+                                            $sumQuantity = \App\Models\Consumption::whereDoesntHave('discount')
+                                                ->whereNotNull('card_id')  // Ajouter cette condition
+                                                ->sum('quantity');
+                                        } catch (\Exception $e) {
+                                            $countConsumptionsWithoutDiscount = 0;
+                                            $sumQuantity = 0;
+                                        }
+                                    @endphp
+                                    <p>Nombre de consommations sans ristourne: <strong>{{ $countConsumptionsWithoutDiscount }}</strong></p>
+                                    <p>Total ristournes à générer: <strong>{{ $sumQuantity * 5 }} FCFA</strong></p>
+                                </div>
+                            </div>
+                            <form action="{{ route('discounts.calculate-all') }}" method="POST">
+                                @csrf
+
+                                <div class="form-group mb-3">
+                                    <label for="period_discount_id_all" class="form-label">Période de ristourne</label>
+                                    <select name="period_discount_id" id="period_discount_id_all" class="form-select form-control" required>
+                                        @foreach($discount_periods as $period)
+                                            <option value="{{ $period->id }}">{{ $period->name ?? 'Période '.$period->id }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-success" {{ $countConsumptionsWithoutDiscount == 0 ? 'disabled' : '' }}>
+                                    Calculer toutes les ristournes
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+            }
+            ?>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Formule de calcul des ristournes</h5>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h4>Ristourne = Quantité consommée × 5 FCFA</h4>
+                    <p>Exemple: Pour une consommation de 100 litres:</p>
+                    <p class="lead">100 litres × 5 FCFA = 500 FCFA de ristourne</p>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="p-3 bg-light rounded">
+                        <h3 class="text-primary mb-0">5 FCFA</h3>
+                        <p class="mb-0">par litre consommé</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!-- Left col -->
         <section class="col-lg-12 connectedSortable">
-          
+
         <div class="card">
             <div class="card-header">
               <h3 class="card-title">{{ __('Discount Beneficiary') }}  </h3>
@@ -200,21 +346,21 @@
                                                 <ion-icon name="close-circle-outline"></ion-icon>
                                                 <i class="fas-solid fa-xmark"></i>
                                                 <i class="fass fa-xmark"></i>
-                                                {{ __('Cancel') }} 
+                                                {{ __('Cancel') }}
                                             </button>
                                             <button type="button" class="btn btn-primary">
                                                 <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
-                                                {{ __('Update') }} 
+                                                {{ __('Update') }}
                                             </button>
                                         </div>
                                     </form>
-        
+
                                 </div>
                                 <!-- /.modal-content -->
                             </div>
                             <!-- /.modal-dialog -->
                         </div>
-                        </td> 
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -234,7 +380,7 @@
             </div>
             <!-- /.card-body -->
           </div>
-          
+
           <!-- /.card -->
         </section>
         <!-- /.Left col -->

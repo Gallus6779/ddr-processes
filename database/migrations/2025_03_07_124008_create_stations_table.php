@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('district_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('validated_by');
+            $table->string('location');
             $table->timestamps();
         });
     }

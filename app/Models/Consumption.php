@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Consumption extends Model
 {
@@ -14,8 +15,15 @@ class Consumption extends Model
         'card_id',
         'wallet_id',
         'quantity',
-        'date_consumption'
-    ]
+        'date_consumption',
+        'discount_amount'
+    ];
+
+    protected $casts = [
+        'date_consumption' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
 
     /**
      * Get the customer that owns the Consumption
@@ -38,13 +46,10 @@ class Consumption extends Model
     }
 
     /**
-     * Get the wallet associated with the Consumption
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * Relation avec la ristourne
      */
-    public function wallet(): HasOne
+    public function discount()
     {
-        return $this->hasOne(Wallet::class);
+        return $this->hasOne(Discount::class, 'consumption_id');
     }
-
 }

@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
-  
+
   <style>
     div.dt-container div.row:last-child{
         display:none;
@@ -46,7 +46,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h5><i class="icon fas fa-check"></i> Alert!</h5>
                     {{ session('success') }}
-                </div>      
+                </div>
             @endif
         </div>
         <div class="col-12 mt-3">
@@ -89,7 +89,7 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
-    
+
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary float-right">
                             {{ __('Calculate a discount') }}
@@ -108,7 +108,7 @@
     <div class="row">
         <!-- Left col -->
         <section class="col-lg-12 connectedSortable">
-          
+
         <div class="card">
             <div class="card-header">
               <h3 class="card-title">{{ __('Customers Discounts') }}  </h3>
@@ -191,21 +191,21 @@
                                                 <ion-icon name="close-circle-outline"></ion-icon>
                                                 <i class="fas-solid fa-xmark"></i>
                                                 <i class="fass fa-xmark"></i>
-                                                {{ __('Cancel') }} 
+                                                {{ __('Cancel') }}
                                             </button>
                                             <button type="button" class="btn btn-primary">
                                                 <ion-icon name="checkmark-circle" class="mt-1" size="small"></ion-icon>
-                                                {{ __('Update') }} 
+                                                {{ __('Update') }}
                                             </button>
                                         </div>
                                     </form>
-        
+
                                 </div>
                                 <!-- /.modal-content -->
                             </div>
                             <!-- /.modal-dialog -->
                         </div>
-                        </td> 
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -236,7 +236,7 @@
             </div>
             <!-- /.card-body -->
           </div>
-          
+
           <!-- /.card -->
         </section>
         <!-- /.Left col -->
