@@ -136,7 +136,8 @@
             if ($discount_periods->isEmpty()) {
                 echo '<div class="alert alert-warning">Aucune période de ristourne n\'est disponible. Veuillez en créer une d\'abord.</div>';
                 echo '<a href="'.route('discounts.discount_periods.create').'" class="btn btn-warning">Gérer les périodes de ristourne</a>';
-            } else {
+            }
+             else {
                 // Afficher les formulaires de calcul de ristourne
             ?>
             <div class="row">

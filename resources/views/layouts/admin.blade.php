@@ -22,35 +22,14 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
                             class="fas fa-bars"></i></a>
                 </li>
-                {{-- @permission('dashboard.read')
+                @permission('dashboard.read')
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="{{ route('admin.dashboard.index') }}" class="nav-link">{{ __('Dashboard') }}</a>
                     </li>
-                @endpermission --}}
+                @endpermission 
             </ul>
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                    aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -60,7 +39,7 @@
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" role="button">
                             <i class="fas fa-user-circle"></i>
-                            <span>{{ $user->name }}</span>
+                            <!--  -->
                             <span>{{ auth()->user()->name }}</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -103,22 +82,7 @@
                                 </a>
                             </li>
                         @endpermission
-                        {{-- @permission('roles.read')
-                            <li class="nav-item">
-                                <a href="{{ route('settings.roles.index') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-shield-alt"></i>
-                                    <p>{{ __('Roles') }}</p>
-                                </a>
-                            </li>
-                        @endpermission
-                        @permission('permissions.read')
-                            <li class="nav-item">
-                                <a href="{{ route('settings.permissions.index') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-user-shield"></i>
-                                    <p>{{ __('Permissions') }}</p>
-                                </a>
-                            </li>
-                        @endpermission --}}
+                       
                         @permission('users.read')
                             <li class="nav-item">
                                 <a href="{{ route('admin.users.index') }}" class="nav-link">
@@ -127,17 +91,7 @@
                                 </a>
                             </li>
                         @endpermission
-                         {{-- @permission('profile.read')
-
-                            <li class="nav-item">
-                                <a href="{{ route('profile.index') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-user"></i>
-                                    <p>{{ __('My Profile') }}</p>
-                                </a>
-                            </li>
-
-                        @endpermission --}}
-
+                       
                         @permission('customers.read')
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -178,7 +132,8 @@
                                     <a href="{{ route('discounts.beneficiary.read') }}" class="nav-link">
                                       <i class="nav-icon fas fa-hand-holding-usd"></i>
                                       <p>{{ __('Beneficiary of Disc.') }}</p>
-                                    </a>            
+                                    </a>
+                                @endpermission           
                                 @permission('imports.read')
                                 <li class="nav-item">
                                     <a href="{{ route('admin.imports.index') }}" class="nav-link">
@@ -224,22 +179,7 @@
                                     </a>
                                 </li>
                                 @endpermission
-                                {{-- @permission('settings.discount_periods.read')
-                                <li class="nav-item">
-                                    <a href="{{ route('settings.discount_periods.read') }}" class="nav-link">
-                                      <i class="nav-icon fas fa-coins"></i>
-                                      <p>{{ __('Discounts period') }}</p>
-                                    </a>            
-                                </li>
-                                @endpermission
-                                @permission('discounts.discounts.read')
-                                <li class="nav-item">
-                                    <a href="{{ route('discounts.discounts.read') }}" class="nav-link">
-                                      <i class="nav-icon fas fa-coins"></i>
-                                      <p>{{ __('Beneficiary of Disc.') }}</p>
-                                    </a>            
-                                </li>
-                                @endpermission --}}
+                                
                                 @permission('roles.read')
                                 <li class="nav-item">
                                     <a href="{{ route('settings.roles.index') }}" class="nav-link">
@@ -260,7 +200,7 @@
                         </li>
                         @endpermission
 
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="javascript:void(0);" id="logout-button" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>{{ __('Logout') }}</p>
@@ -268,7 +208,7 @@
                             <form id="logout-form" class="d-none" action="{{ route('logout') }}" method="POST">
                                 @csrf
                             </form>
-                        </li> --}}
+                        </li>
 
                     </ul>
                 </nav>
@@ -290,65 +230,62 @@
         </footer>
     </div>
 
-    <script>
+    <!-- <script>
         window.jQuery = null;
         window.$ = null;
+    </script> -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Gestionnaire d'événement pour ouvrir la modal
+            document.querySelectorAll("[data-toggle='modal']").forEach(function(trigger) {
+                trigger.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    var targetSelector = trigger.getAttribute("data-target");
+                    var modal = document.querySelector(targetSelector);
+                    if(modal){
+                        modal.style.display = "block";
+                        modal.classList.add("show");
+
+                        // Créez un arrière-plan personnalisé
+                        var backdrop = document.createElement("div");
+                        backdrop.className = "custom-modal-backdrop";
+                        backdrop.style.position = "fixed";
+                        backdrop.style.top = "0";
+                        backdrop.style.left = "0";
+                        backdrop.style.width = "100%";
+                        backdrop.style.height = "100%";
+                        backdrop.style.backgroundColor = "rgba(0,0,0,0.5)";
+                        backdrop.style.zIndex = "1040";
+                        document.body.appendChild(backdrop);
+
+                        // Fermeture de la modal lorsque l'on clique sur un bouton avec data-dismiss="modal"
+                        modal.querySelectorAll("[data-dismiss='modal']").forEach(function(btn) {
+                            btn.addEventListener("click", function(){
+                                modal.style.display = "none";
+                                modal.classList.remove("show");
+                                if(backdrop){
+                                    backdrop.remove();
+                                }
+                            });
+                        });
+
+                        // Fermeture de la modal lorsque l'on clique en dehors du contenu
+                        modal.addEventListener("click", function(e){
+                            if(e.target === modal) {
+                                modal.style.display = "none";
+                                modal.classList.remove("show");
+                                if(backdrop){ backdrop.remove(); }
+                            }
+                        });
+                    }
+                });
+            });
+        });
     </script>
 
     @vite(['resources/js/app.js'])
 
     @stack('scripts')
-
-    @push('scripts')
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Gestionnaire d'événement pour ouvrir la modal
-        document.querySelectorAll("[data-toggle='modal']").forEach(function(trigger) {
-            trigger.addEventListener("click", function(e) {
-                e.preventDefault();
-                var targetSelector = trigger.getAttribute("data-target");
-                var modal = document.querySelector(targetSelector);
-                if(modal){
-                    modal.style.display = "block";
-                    modal.classList.add("show");
-
-                    // Créez un arrière-plan personnalisé
-                    var backdrop = document.createElement("div");
-                    backdrop.className = "custom-modal-backdrop";
-                    backdrop.style.position = "fixed";
-                    backdrop.style.top = "0";
-                    backdrop.style.left = "0";
-                    backdrop.style.width = "100%";
-                    backdrop.style.height = "100%";
-                    backdrop.style.backgroundColor = "rgba(0,0,0,0.5)";
-                    backdrop.style.zIndex = "1040";
-                    document.body.appendChild(backdrop);
-
-                    // Fermeture de la modal lorsque l'on clique sur un bouton avec data-dismiss="modal"
-                    modal.querySelectorAll("[data-dismiss='modal']").forEach(function(btn) {
-                        btn.addEventListener("click", function(){
-                            modal.style.display = "none";
-                            modal.classList.remove("show");
-                            if(backdrop){
-                                backdrop.remove();
-                            }
-                        });
-                    });
-
-                    // Fermeture de la modal lorsque l'on clique en dehors du contenu
-                    modal.addEventListener("click", function(e){
-                        if(e.target === modal) {
-                            modal.style.display = "none";
-                            modal.classList.remove("show");
-                            if(backdrop){ backdrop.remove(); }
-                        }
-                    });
-                }
-            });
-        });
-    });
-    </script>
-    @endpush
 
 </body>
 
