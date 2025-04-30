@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CustomerType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        CustomerType::firstOrCreate([
+            'name' => 'Particulier'
+        ]);
         DB::transaction(function () {
             \App\Models\User::firstOrCreate([
                 'email' => 'admin@local.test'

@@ -12,10 +12,11 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'customer_type_id',
+        'firstname',
+        'lastname',
         'email',
-        'phone'
+        'phone',
+        'customer_type_id'
     ];
 
     /**
@@ -27,6 +28,10 @@ class Customer extends Model
     {
         return $this->belongsTo(CustomerType::class, 'customer_type_id');
     }
+    // public function customer_type(): HasOne
+    // {
+    //     return $this->hasOne(CustomerType::class);
+    // }
 
     /**
      * Get all of the cards for the Customer

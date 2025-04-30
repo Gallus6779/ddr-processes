@@ -14,8 +14,9 @@ return new class extends Migration
         if (!Schema::hasTable('customers')) {
             Schema::create('customers', function (Blueprint $table) {
                 $table->id();
-                $table->string('name')->unique();
-                $table->string('email')->unique();
+                $table->string('firstname');
+                $table->string('lastname');
+                $table->string('email');
                 $table->unsignedBigInteger('phone');
                 $table->unsignedBigInteger('customer_type_id');
                 $table->timestamps();

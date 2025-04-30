@@ -9,11 +9,14 @@ class Discount extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'consumption_id',
         'customer_id',
         'card_id',
         'period_discount_id',
         'district_id',
         'volume_caculated',
+        'amount',
+        'status',
         'created_by',
         'validated_by'
     ];
@@ -70,4 +73,5 @@ class Discount extends Model
     }
 
     
+
 }

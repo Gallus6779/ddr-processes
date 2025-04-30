@@ -17,7 +17,6 @@
   <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
-  
   <style>
     div.dt-container div.row:last-child{
         display:none;
@@ -89,7 +88,6 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
-    
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary float-right">
                             {{ __('Calculate a discount') }}
@@ -108,7 +106,6 @@
     <div class="row">
         <!-- Left col -->
         <section class="col-lg-12 connectedSortable">
-          
         <div class="card">
             <div class="card-header">
               <h3 class="card-title">{{ __('Customers Discounts') }}  </h3>
