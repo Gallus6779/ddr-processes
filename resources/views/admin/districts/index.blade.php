@@ -4,13 +4,8 @@
 
 @push('styles')
     <!-- Font Awesome -->
-  {{-- <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}"> --}}
-  <!-- daterange picker -->
-  {{-- <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}"> --}}
   <!-- Select2 -->
   <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" />
-  {{-- <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}"> --}}
-  {{-- <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}"> --}}
   <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
@@ -207,7 +202,7 @@
                                     </div>
                                     <!-- /.modal-dialog -->
                                 </div>
-<!--  Modal used to delete a district -->
+                                <!--  Modal used to delete a district -->
                                 <div class="modal fade" id="district-delete{{$district->id}}">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
@@ -255,10 +250,10 @@
                                     </div>
                                     <!-- /.modal-dialog -->
                                 </div>
-<!-- END Modal used to delete a district -->
+                                <!-- END Modal used to delete a district -->
 
-<!--  Modal used to restore a district -->
-<div class="modal fade" id="district-restore{{$district->id}}">
+                                <!--  Modal used to restore a district -->
+                                <div class="modal fade" id="district-restore{{$district->id}}">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -301,7 +296,7 @@
                                     </div>
                                     <!-- /.modal-dialog -->
                                 </div>
-<!-- END Modal used to restore a district -->
+                                <!-- END Modal used to restore a district -->
                             </td>
                         </tr>
                         @endforeach
@@ -311,9 +306,10 @@
                     <tfoot>
                         <tr>
                             <th>{{ __('Name') }} </th>
-                            <th> {{ __('Acronym') }}</th>
+                            <th>{{ __('Acronym') }}</th>
                             <th>{{ __('Created By') }} </th>
                             <th>{{ __('Validated By') }} </th>
+                            <th>{{ __('status') }} </th>
                             <th>Actions </th>
                         </tr>
                     </tfoot>

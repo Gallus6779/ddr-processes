@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Imports\ImportCustomerList;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\District;
 use App\Models\Discount;
@@ -159,6 +160,29 @@ class DiscountController extends Controller
     }
     
     
+    public function import_customers(){
+    
+        $filePath = public_path('customer_list_template.xlsx');
+
+        // dd(public_path('customer_list_template.xlsx'));
+
+        // dd(Storage::exists($filePath));
+        return response()->file(['file_path' => $filePath]);
+
+        if (Storage::exists($filePath)) {
+
+            $fileSize = Storage::size($filePath);
+            // echo "File size: " . $fileSize . " bytes";
+            dd("File size: " . $fileSize . " bytes");
+
+        } else {
+
+            echo "File does not exist.";
+
+        }
+    
+        // return Storage::download('customer_list_template.xlsx', 'customer_list_template.xlsx');
+    }
     /**
      * 
      */

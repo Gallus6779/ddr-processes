@@ -70,7 +70,7 @@
                                 <div class="modal-body card-body row">
                                     <div class="form-group col-md-6">
                                         <label for="name">{{ __('Name') }}  <sup class="text-danger">*</sup></label>
-                                        <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" type="text" name="name" placeholder="District Centre-Sud-Est" required>
+                                        <input id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" type="text" name="name" placeholder="1er Trimestre 2025" required>
                                         @error('name')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror

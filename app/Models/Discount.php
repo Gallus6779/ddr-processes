@@ -12,7 +12,7 @@ class Discount extends Model
         'consumption_id',
         'customer_id',
         'card_id',
-        'period_discount_id',
+        'discount_period_id',
         'district_id',
         'volume_caculated',
         'amount',

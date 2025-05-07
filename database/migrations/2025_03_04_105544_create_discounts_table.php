@@ -16,7 +16,7 @@ return new class extends Migration
                 $table->id();
                 $table->unsignedBigInteger('customer_id');
                 $table->unsignedBigInteger('card_id');
-                $table->unsignedBigInteger('period_discount_id');
+                $table->unsignedBigInteger('discount_period_id');
                 $table->unsignedBigInteger('district_id');
                 $table->decimal('volume_caculated');
                 $table->timestamps();

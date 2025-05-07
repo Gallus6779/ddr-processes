@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
     
     Route::put('/customers/{customer}/{card}', [DiscountController::class, 'customers_update'])->name('discounts.customers.update');
+    
     Route::group(['prefix' => 'discounts', 'as' => 'discounts.'], function () {
         Route::get('/discounts', [DiscountController::class, 'discount_read'])->name('discounts.read');
         Route::post('/discounts', [DiscountController::class, 'discount_create'])->name('discounts.create');
@@ -47,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/customers', [DiscountController::class, 'customers_read'])->name('customers.read');
         Route::post('/customers', [DiscountController::class, 'customers_create'])->name('customers.create');
         Route::put('/customers/{id}', [DiscountController::class, 'customers_delete'])->name('customers.delete');
+        Route::get('import-customers', [DiscountController::class, 'import_customers'])->name('discounts.template');
         
         Route::get('/discount-periods', [DiscountController::class, 'discount_periods_read'])->name('discount_periods.read');
         Route::post('/discount-periods', [DiscountController::class, 'discount_periods_create'])->name('discount_periods.create');

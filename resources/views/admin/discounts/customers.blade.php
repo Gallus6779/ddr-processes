@@ -91,7 +91,7 @@
                                         <i class="fass fa-xmark"></i>
                                         {{ __('Cancel') }} 
                                     </button>
-                                    <button type="button" class="btn btn-warning">
+                                    <button type="button" class="btn btn-warning" onclick="window.location='{{ route('discounts.discounts.template') }}'">
                                         <i class="fas fa-download mr-1"></i>
                                         {{ __('Download template') }} 
                                     </button>

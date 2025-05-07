@@ -92,7 +92,7 @@
                             </li>
                         @endpermission
                        
-                        @permission('customers.read')
+                        @permission('discounts.read')
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-toolbox"></i>

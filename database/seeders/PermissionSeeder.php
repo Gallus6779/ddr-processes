@@ -7,29 +7,29 @@ use Illuminate\Support\Facades\DB;
 
 class PermissionSeeder extends Seeder
 {
-    private const CRUD_DEF = [
-        'create',
-        'read',
-        'update',
-        'delete'
-    ];
+    // private const CRUD_DEF = [
+    //     'create',
+    //     'read',
+    //     'update',
+    //     'delete'
+    // ];
 
-    private const DEFAULT_CRUD_RESOURCES = [
-        'roles',
-        'permissions',
-        'users',
-    ];
+    // private const DEFAULT_CRUD_RESOURCES = [
+    //     'roles',
+    //     'permissions',
+    //     'users',
+    // ];
 
     public function run(): void
     {
         DB::transaction(function () {
-            for ($i = 0; $i < count(self::DEFAULT_CRUD_RESOURCES); $i++) {
-                for ($j = 0; $j < count(self::CRUD_DEF); $j++) {
-                    \App\Models\Permission::create([
-                        'name' => self::DEFAULT_CRUD_RESOURCES[$i] . '.' . self::CRUD_DEF[$j]
-                    ]);
-                }
-            }
+            // for ($i = 0; $i < count(self::DEFAULT_CRUD_RESOURCES); $i++) {
+            //     for ($j = 0; $j < count(self::CRUD_DEF); $j++) {
+            //         \App\Models\Permission::create([
+            //             'name' => self::DEFAULT_CRUD_RESOURCES[$i] . '.' . self::CRUD_DEF[$j]
+            //         ]);
+            //     }
+            // }
 
             $permissions = [
                 'dashboard.read',
@@ -80,14 +80,12 @@ class PermissionSeeder extends Seeder
 
             foreach($permissions as $permission){
                 
-                
                 \App\Models\Permission::firstOrCreate([
                     'name' => $permission
                 ],[
                     'name' => $permission
                 ]);
 
-                // \App\Models\Permission::create(['name' => $permission]);
             }
 
         });

@@ -16,7 +16,8 @@ class Station extends Model
         'district_id',
         'status',
         'created_by',
-        'validated_by'
+        'validated_by',
+        'location'
     ];
 
     /**
