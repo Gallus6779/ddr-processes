@@ -10,6 +10,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Admin\ImportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ConsumptionController;
+use App\Http\Controllers\Admin\ActivityController;
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -26,6 +27,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/imports/customers', [ImportController::class, 'storeCustomers'])->name('imports.customers.store');
         Route::post('/consumptions/import', [ConsumptionController::class, 'import'])->name('consumptions.import');
         Route::get('/consumptions', [ConsumptionController::class, 'index'])->name('consumptions.index');
+        Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
+        Route::get('/activities/{id}', [ActivityController::class, 'show'])->name('activities.show');
+        Route::delete('/activities/{id}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+        Route::post('/activities/clear', [ActivityController::class, 'clear'])->name('activities.clear');
     });
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -60,7 +65,8 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/districts', [SettingController::class, 'districts_read'])->name('districts.read');
         Route::post('/districts', [SettingController::class, 'districts_create'])->name('districts.create');
-        Route::put('/districts/{id}', [SettingController::class, 'districts_update'])->name('districts.update');Route::resource('roles', RoleController::class)->except(['show']);
+        Route::put('/districts/{id}', [SettingController::class, 'districts_update'])->name('districts.update');
+        Route::resource('roles', RoleController::class)->except(['show']);
         Route::resource('permissions', PermissionController::class)->except(['show']);
 
         // Route::get('/consumptions', [CustomerController::class, 'consumptions'])->name('consumptions');

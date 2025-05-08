@@ -89,6 +89,17 @@ class UserController extends Controller
             if ($request->has('roles')) {
                 $user->roles()->sync($request->post('roles'));
             }
+
+            // Journalisation manuelle de l'activité
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($user)
+                ->withProperties([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'roles' => $request->has('roles') ? $request->post('roles') : []
+                ])
+                ->log('Création d\'un utilisateur');
         });
 
         return redirect()
@@ -117,11 +128,32 @@ class UserController extends Controller
         validate_permission('users.update');
 
         DB::transaction(function () use ($request, $user) {
+            // Sauvegarder les anciennes valeurs pour le log
+            $oldValues = [
+                'name' => $user->name,
+                'email' => $user->email,
+                'roles' => $user->roles->pluck('id')->toArray()
+            ];
+
             $user->update($request->only('name', 'email'));
 
             if ($request->has('roles')) {
                 $user->roles()->sync($request->post('roles'));
             }
+
+            // Journalisation manuelle de l'activité
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($user)
+                ->withProperties([
+                    'old_values' => $oldValues,
+                    'new_values' => [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'roles' => $request->has('roles') ? $request->post('roles') : []
+                    ]
+                ])
+                ->log('Mise à jour d\'un utilisateur');
         });
 
         return redirect()
@@ -132,6 +164,17 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
         validate_permission('users.delete');
+
+        // Journalisation avant la suppression
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($user)
+            ->withProperties([
+                'name' => $user->name,
+                'email' => $user->email,
+                'roles' => $user->roles->pluck('id')->toArray()
+            ])
+            ->log('Suppression d\'un utilisateur');
 
         $user->delete();
         return redirect()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Station;
 use App\Models\District;
@@ -13,12 +14,12 @@ use App\Models\DiscountPeriod;
 class SettingController extends Controller
 {
     /**
-     * 
+     *
      */
     public function station_read(Request $request){
 
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-        
+
         // Validate permission
         try {
             validate_permission('settings.stations.read');
@@ -39,12 +40,12 @@ class SettingController extends Controller
     }
 
     /**
-     * 
+     *
      */
     public function stations_create(Request $request){
 
         // Validate permission
-        try {        
+        try {
             validate_permission('settings.stations.create');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
@@ -62,27 +63,36 @@ class SettingController extends Controller
 
         $user_id = auth()->user()->id;
         $validatedData += [
-            "created_by" => $user_id, 
+            "created_by" => $user_id,
             "validated_by" => $user_id
         ];
-        
+
         $station = Station::create($validatedData);
-        // dd($district);
+
+        // Journalisation de l'activité
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($station)
+            ->withProperties([
+                'name' => $station->name,
+                'district_id' => $station->district_id
+            ])
+            ->log('Création d\'une station-service');
 
         return back()->with('success', 'District created successfully.');
     }
 
     public function stations_update(Request $request, $id){
-        
+
         $station = Station::findOrFail($id);
 
         // Validate permission
-        try {        
+        try {
             validate_permission('settings.stations.update');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
-        
+
         $validatedData = $request->validate([
             'name' => ['required',  Rule::unique('stations')->ignore($station->id)],
             'district_id' => ['required'],
@@ -94,22 +104,41 @@ class SettingController extends Controller
         ]);
 
         $user_id = auth()->user()->id;
-        $validatedData += [ 
+        $validatedData += [
             "validated_by" => $user_id
         ];
-        
+
+        // Sauvegarder les anciennes valeurs pour le log
+        $oldValues = [
+            'name' => $station->name,
+            'district_id' => $station->district_id
+        ];
+
         $station->update($validatedData);
-        // dd($district);
+
+        // Journalisation de l'activité
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($station)
+            ->withProperties([
+                'old_values' => $oldValues,
+                'new_values' => [
+                    'name' => $station->name,
+                    'district_id' => $station->district_id
+                ]
+            ])
+            ->log('Mise à jour d\'une station-service');
+
         return back()->with('success', 'Station updated successfully.');
     }
 
     /**
-     * 
+     *
      */
     // public function discount_read(Request $request){
 
     //     $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-        
+
     //     // Validate permission
     //     try {
     //         validate_permission('discounts.read');
@@ -131,7 +160,7 @@ class SettingController extends Controller
     // }
 
     // /**
-    //  * 
+    //  *
     //  */
     // public function discount_periods_read(Request $request){
 
@@ -143,14 +172,14 @@ class SettingController extends Controller
     //     } catch (\Exception $e) {
     //         return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
     //     }
-        
+
     //     // Fetch districts with related models
     //     // try {
     //         // dd(1);
     //         $discount_periods = DiscountPeriod::latest()->with('createdBy', 'validatedBy')->paginate(10);
     //         // dd(1);
     //         $districts = District::get();
-            
+
     //         return view('admin.discounts.periods', compact('discount_periods', 'districts', 'user'));
     //     // } catch (\Exception $e) {
     //     //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
@@ -158,7 +187,7 @@ class SettingController extends Controller
     // }
 
     /**
-     * 
+     *
      */
     public function discount_periods_create(Request $request){
 
@@ -192,13 +221,13 @@ class SettingController extends Controller
                 "description" => $request->description,
             ];
         }
-        
+
         $user_id = auth()->user()->id;
         $validatedData += [
-            "created_by" => $user_id, 
+            "created_by" => $user_id,
             "validated_by" => $user_id
         ];
-        
+
         // dd($validatedData);
         // Store districts with related models
         try {
@@ -211,19 +240,19 @@ class SettingController extends Controller
     }
 
     /**
-     * 
+     *
      */
     public function discount_periods_update(Request $request, $id){
-    
+
         $discount_period = DiscountPeriod::findOrFail($id);
 
         // Validate permission
-        try {        
+        try {
             validate_permission('discounts.discount_periods.update');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
-        
+
         $validatedData = $request->validate([
             'name' => 'required|unique:discount_periods',
             'district_id' => [
@@ -249,17 +278,17 @@ class SettingController extends Controller
         }
 
         // $user_id = auth()->user()->id;
-        // $validatedData += [ 
+        // $validatedData += [
         //     "updated_by" => $user_id
         // ];
-        
+
         $discount_period->update($validatedData);
         // dd($district);
         return back()->with('success', 'District updated successfully.');
     }
 
     // /**
-    //  * 
+    //  *
     //  */
     // public function settings_discounts_create(Request $request){
     //     validate_permission('discounts.discounts.create');
@@ -268,7 +297,7 @@ class SettingController extends Controller
     // }
 
     /**
-     * 
+     *
      */
     public function districts_read(Request $request){
 
@@ -293,7 +322,7 @@ class SettingController extends Controller
     }
 
     /**
-     * 
+     *
      */
     public function districts_create(Request $request){
 
@@ -313,27 +342,36 @@ class SettingController extends Controller
 
         $user_id = auth()->user()->id;
         $validatedData += [
-            "created_by" => $user_id, 
+            "created_by" => $user_id,
             "validated_by" => $user_id
         ];
-        
+
         $district = District::create($validatedData);
-        // dd($district);
+
+        // Journalisation de l'activité
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($district)
+            ->withProperties([
+                'name' => $district->name,
+                'acronym' => $district->acronym
+            ])
+            ->log('Création d\'un district');
 
         return back()->with('success', 'District created successfully.');
     }
 
     public function districts_update(Request $request, $id){
-        
+
         $district = District::findOrFail($id);
 
         // Validate permission
-        try {        
+        try {
             validate_permission('settings.districts.update');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
-        
+
         $validatedData = $request->validate([
             'name' => ['required',  Rule::unique('districts')->ignore($district->id)],
             'acronym' => ['required', Rule::unique('districts')->ignore($district->id)],
@@ -346,12 +384,31 @@ class SettingController extends Controller
         ]);
 
         $user_id = auth()->user()->id;
-        $validatedData += [ 
+        $validatedData += [
             "validated_by" => $user_id
         ];
-        
+
+        // Sauvegarder les anciennes valeurs pour le log
+        $oldValues = [
+            'name' => $district->name,
+            'acronym' => $district->acronym
+        ];
+
         $district->update($validatedData);
-        // dd($district);
+
+        // Journalisation de l'activité
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($district)
+            ->withProperties([
+                'old_values' => $oldValues,
+                'new_values' => [
+                    'name' => $district->name,
+                    'acronym' => $district->acronym
+                ]
+            ])
+            ->log('Mise à jour d\'un district');
+
         return back()->with('success', 'District updated successfully.');
     }
 

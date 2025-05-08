@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Discount extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = [
         'consumption_id',
         'customer_id',
@@ -20,6 +23,18 @@ class Discount extends Model
         'created_by',
         'validated_by'
     ];
+
+    /**
+     * Configure les options pour la journalisation d'activité
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['amount', 'status', 'customer_id', 'created_by', 'validated_by'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('discount');
+    }
 
     /**
      * Get the customer that owns the Discount

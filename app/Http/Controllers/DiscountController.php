@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\District;
 use App\Models\Discount;
 use App\Models\DiscountPeriod;
 use App\Models\Consumption;
+// Importer le façade d'activité
+use Spatie\Activitylog\Facades\LogBatch;
 
 class DiscountController extends Controller
 {
@@ -169,10 +172,22 @@ class DiscountController extends Controller
             $discount->created_by = $request->user()->id;
             $discount->save();
 
+            // Journalisation de l'activité
+            activity()
+                ->causedBy($request->user())
+                ->performedOn($discount)
+                ->withProperties([
+                    'montant' => $discountAmount,
+                    'customer_id' => $consumption->customer_id,
+                    'consumption_id' => $consumption->id,
+                    'volume' => $consumption->quantity
+                ])
+                ->log('Création d\'une ristourne');
+
             return redirect()->back()->with('success', "Une ristourne de {$discountAmount} FCFA a été créée avec succès.");
         } catch (\Exception $e) {
             // Log l'erreur pour le débogage
-            \Log::error('Erreur de calcul de ristourne: ' . $e->getMessage());
+            Log::error('Erreur de calcul de ristourne: ' . $e->getMessage());
 
             return redirect()->back()->withErrors(['error' => 'Une erreur s\'est produite lors du calcul de la ristourne: ' . $e->getMessage()]);
         }
@@ -196,6 +211,9 @@ class DiscountController extends Controller
         ]);
 
         try {
+            // Démarrer un batch d'activité
+            LogBatch::startBatch();
+
             // Récupérer les consommations sans ristourne qui ont une carte associée
             $consumptions = Consumption::whereDoesntHave('discount')
                 ->whereNotNull('card_id')
@@ -220,18 +238,43 @@ class DiscountController extends Controller
                 $discount->created_by = $request->user()->id;
                 $discount->save();
 
+                // Journalisation de l'activité
+                activity()
+                    ->causedBy($request->user())
+                    ->performedOn($discount)
+                    ->withProperties([
+                        'montant' => $discountAmount,
+                        'customer_id' => $consumption->customer_id,
+                        'consumption_id' => $consumption->id,
+                        'volume' => $consumption->quantity
+                    ])
+                    ->log('Création d\'une ristourne en traitement par lot');
+
                 $count++;
                 $totalAmount += $discountAmount;
             }
 
+            // Terminer le batch d'activité
+            LogBatch::endBatch();
+
+            // Journaliser l'activité globale
             if ($count > 0) {
+                activity()
+                    ->causedBy($request->user())
+                    ->withProperties([
+                        'nombre_ristournes' => $count,
+                        'montant_total' => $totalAmount,
+                        'periode_id' => $request->period_discount_id
+                    ])
+                    ->log('Calcul de ' . $count . ' ristournes pour un total de ' . $totalAmount . ' FCFA');
+
                 return redirect()->back()->with('success', "{$count} ristournes calculées pour un total de {$totalAmount} FCFA.");
             } else {
                 return redirect()->back()->withErrors(['error' => 'Aucune consommation éligible pour le calcul de ristourne.']);
             }
         } catch (\Exception $e) {
             // Log l'erreur pour le débogage
-            \Log::error('Erreur de calcul de ristourne: ' . $e->getMessage());
+            Log::error('Erreur de calcul de ristourne: ' . $e->getMessage());
 
             return redirect()->back()->withErrors(['error' => 'Une erreur s\'est produite lors du calcul des ristournes: ' . $e->getMessage()]);
         }

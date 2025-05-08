@@ -251,6 +251,15 @@
                         </li>
                         @endpermission
 
+                        @permission('admin.activities.read')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.activities.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-history"></i>
+                                    <p>{{ __('Journal d\'activités') }}</p>
+                                </a>
+                            </li>
+                        @endpermission
+
                         {{-- <li class="nav-item">
                             <a href="javascript:void(0);" id="logout-button" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
