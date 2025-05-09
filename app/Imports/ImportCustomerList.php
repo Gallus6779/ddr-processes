@@ -164,7 +164,7 @@ class ImportCustomerList implements ToCollection, WithHeadingRow, WithValidation
                             DB::rollBack();
                 
                             // return redirect()->back()->withErrors(['error' => 'Transaction failed', 'message' => $e->getMessage()]);
-                            return response()->json(['error' => 'Transaction failed', 'line' => 'line : ' . $line, 'message' => $e->getMessage()], 500);
+                            return response()->json(['error' => '1. Transaction failed', 'line' => 'line du fichier: ' . $line, 'message' => $e->getMessage()], 500);
                         }
                     }else{
                                     
@@ -186,7 +186,7 @@ class ImportCustomerList implements ToCollection, WithHeadingRow, WithValidation
                             // Rollback the transaction
                             DB::rollBack();
                             
-                            return response()->json(['error' => 'Transaction failed', 'line : ' => $line, 'message' => $e->getMessage()], 500);
+                            return response()->json(['error' => '2. Transaction failed ', 'line : ' => 'line du fichier: ' . $line, 'message' => $e->getMessage()], 500);
                         }
                     }
 

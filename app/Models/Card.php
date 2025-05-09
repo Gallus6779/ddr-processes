@@ -11,10 +11,10 @@ class Card extends Model
     use HasFactory;
 
     protected $fillable = [
-        'card_number',
-        'station_id',
+        'number',
         'customer_id',
-        'number'
+        'card_owner',
+        'phone'
     ];
 
     /**

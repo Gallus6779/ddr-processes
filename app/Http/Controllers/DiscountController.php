@@ -60,7 +60,7 @@ class DiscountController extends Controller
      */
     public function discount_periods_read(Request $request){
 
-        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
+        $user = $request->user(); // chargement des parametres de l'utilisateur connecté dans la vue appelée
 
         // Validate permission
         try {
@@ -82,6 +82,41 @@ class DiscountController extends Controller
         // }
     }
 
+    public function discount_periods_create(Request $request){
+
+        $user = $request->user(); // chargement des parametres de l'utilisateur connecté dans la vue appelée
+        // dd($request);
+
+        // Validate permission
+        try {
+            validate_permission('discounts.discount_periods.create');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
+        }
+        // dd($request);
+/**
+ * Rules description :
+ * 
+ */
+        $validatedData = $request->validate([
+            'name' => ['required','string', 'unique:discount_periods,name'],
+            'start_date' => 'required|exists:customer_types,id',
+            'end_date' => 'required|numeric|unique:cards',
+            'district_id' => 'required|numeric',
+            'dscription' => 'nullable|string'
+        ],[
+            'name.required' => 'Name field is required.',
+            'name.unique' => 'Name field is already taken.',
+            // 'email.unique' => 'Email field is already taken.',
+            'customer_type_id.required' => 'Customer Type field doesn\'t exist.',
+
+            'card_owner.required' => 'cardOwner field is required.',
+            'number.required' => 'Number field is required.',
+            'email.required' => 'Email field is required.'
+        ]);
+        
+        dd($request);
+    }
     /**
      * 
      */
@@ -145,7 +180,6 @@ class DiscountController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view customers.']);
         }
-// dd(1);
         // Fetch districts with related models
         try {
             $customers = Customer::orderBy('id')->get();
@@ -164,24 +198,8 @@ class DiscountController extends Controller
     
         $filePath = public_path('customer_list_template.xlsx');
 
-        // dd(public_path('customer_list_template.xlsx'));
+        return response()->download($filePath, "customer_list_template.xlsx");
 
-        // dd(Storage::exists($filePath));
-        return response()->file(['file_path' => $filePath]);
-
-        if (Storage::exists($filePath)) {
-
-            $fileSize = Storage::size($filePath);
-            // echo "File size: " . $fileSize . " bytes";
-            dd("File size: " . $fileSize . " bytes");
-
-        } else {
-
-            echo "File does not exist.";
-
-        }
-    
-        // return Storage::download('customer_list_template.xlsx', 'customer_list_template.xlsx');
     }
     /**
      * 
@@ -195,7 +213,7 @@ class DiscountController extends Controller
         }
 
         if($request->has('filename')){
-
+            // dd(1);
             $customerImport = new ImportCustomerList();
             // dump($_FILES['filename']['tmp_name']);
 
@@ -215,14 +233,7 @@ class DiscountController extends Controller
 
 
             return back()->with($responseData['success']);
-            // Access the data
-            // $message = $responseData['message'];
-            // $data = $responseData['data'];
-            // dd($data);
-            // dd($result->message);
-            // dump($customerImport->errors());
-            // dd($request->file('filename'));
-
+            
         }else{
             $customer = Customer::where('name', $request->name)->first();
         
@@ -233,32 +244,39 @@ class DiscountController extends Controller
                     'customer_type_id' => 'required|exists:customer_types,id',
                     'number' => 'required|numeric|unique:cards',
                     'card_owner' => 'required|string',
-                    'email' => 'required|email|unique:customers',
-                    'phone' => 'required|numeric'
+                    'email' => 'nullable|email',
+                    'phone' => 'nullable|numeric'
                 ],[
                     'name.required' => 'Name field is required.',
                     'name.unique' => 'Name field is already taken.',
-                    'email.unique' => 'Email field is already taken.',
+                    // 'email.unique' => 'Email field is already taken.',
                     'customer_type_id.required' => 'Customer Type field doesn\'t exist.',
     
                     'card_owner.required' => 'cardOwner field is required.',
                     'number.required' => 'Number field is required.',
-                    'phone.required' => 'Phone field is required.',
                     'email.required' => 'Email field is required.'
                 ]);
     
                 $customer_data = $request->except(['number', 'card_owner']);
-        
+
                 DB::transaction(function () use ($request, $customer_data) {
+
                     $customer = Customer::create($customer_data);
         
-                    $card = new Card();
+                    // $card = new Card();
+                    $card = Card::create([
+                        'number' => $request->number,
+                        'card_owner' => $request->card_owner,
+                        'customer_id' => $customer->id,
+                        'phone' => $request->phone
+                    ]);
         
-                    $card->number = $request->number;
-                    $card->card_owner = $request->card_owner;
-                    $card->customer_id = $customer->id;
+                    // $card->number = $request->number;
+                    // $card->card_owner = $request->card_owner;
+                    // $card->customer_id = $customer->id;
+                    // $card->phone = $customer->phone;
         
-                    $card->save();
+                    // $card->save();
                 });
     
             }else{
@@ -312,21 +330,21 @@ class DiscountController extends Controller
         $validatedData = $request->validate([
             'name' => ['required', 'string', Rule::unique('customers')->ignore($customer->id)],
             'customer_type_id' => 'required|exists:customer_types,id',
+            'email' => ['nullable', 'email'],
             'number' => ['required', 'numeric', Rule::unique('cards')->ignore($card->id)],
             'card_owner' => 'required|string',
-            'email' => ['required', 'email', Rule::unique('customers')->ignore($customer->id)],
-            'phone' => 'required|numeric' 
+            'phone' => 'nullable|numeric' 
         ],[
             'name.required' => 'Name field is required.',
             'customer_type_id.required' => 'Customer Type field is required.',
             'name.unique' => 'Name field is already taken.',
-            'email.unique' => 'Email field is already taken.',
             'customer_type_id.required' => 'Customer Type field doesn\'t exist.'
         ]); 
 
-        $customer_data = $request->except(['number', 'card_owner']);
+        // dd($request);
+        $customer_data = $request->except(['number', 'card_owner', 'phone']);
 
-        $card_data = $request->only(['number', 'card_owner']);
+        $card_data = $request->only(['number', 'card_owner', 'phone']);
 
         DB::transaction(function () use ($request, $customer, $card, $customer_data, $card_data ) {
             $customer->update($customer_data);

@@ -15,7 +15,7 @@ class CustomerTypeSeeder extends Seeder
         $customerTypes = [
             'Individual',
             'Company'
-    ];
+        ];
 
         foreach($customerTypes as $customerTypes){
             

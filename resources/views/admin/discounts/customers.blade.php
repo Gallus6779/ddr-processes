@@ -217,12 +217,12 @@
                                 <td>{{ $customer->name }}</td>
                                 <td>{{ $customer->customer_type->name }}</td>
                                 <td>{{ $customer->email }}</td>
-                                <td>{{ $customer->phone }}</td> 
+                                <td>{{ $card->phone }}</td> 
                                 <td>{{ $card->number }}</td>
                                 <td>{{ $card->card_owner }}</td> 
                                 <td>
                                 @permission('discounts.customers.update')
-                                <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#customers-edit{{ $customer->id }}">
+                                <a name="" id="" class="btn btn-primary" href="#" role="button"  data-toggle="modal" data-target="#customers-edit{{ $card->id }}">
                                     <i class="fas fa-edit"></i> Update
                                 </a>
                                 @endpermission
@@ -233,7 +233,7 @@
                                 </button>
                                 @endpermission
         
-                                <div class="modal fade" id="customers-edit{{ $customer->id }}">
+                                <div class="modal fade" id="customers-edit{{ $card->id }}">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -284,7 +284,7 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <label for="phone">{{ __('Customer Phone') }} </label>
-                                                        <input id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $customer->phone) }}" type="tel" name="phone" placeholder="Neptune OIL" >
+                                                        <input id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $card->phone) }}" type="tel" name="phone" placeholder="Neptune OIL" >
                                                         @error('phone')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror

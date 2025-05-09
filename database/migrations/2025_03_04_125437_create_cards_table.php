@@ -16,6 +16,7 @@ return new class extends Migration
                 $table->id();
                 $table->unsignedBigInteger('customer_id');
                 $table->unsignedBigInteger('number')->unique();
+                $table->unsignedBigInteger('phone')->nullable();
                 $table->timestamps();
             });
         }
