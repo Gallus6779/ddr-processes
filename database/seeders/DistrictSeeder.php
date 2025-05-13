@@ -20,6 +20,10 @@ class DistrictSeeder extends Seeder
             [
                 'name' => 'DISTRICT CENTRE SUD EST',
                 'acronym' => 'DCSE'
+            ],
+            [
+                'name' => 'DISTRICT NORD',
+                'acronym' => 'DNOR'
             ]
         );
 

@@ -200,16 +200,6 @@
                         </li>
                         @endpermission
 
-                        <li class="nav-item">
-                            <a href="javascript:void(0);" id="logout-button" class="nav-link">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>{{ __('Logout') }}</p>
-                            </a>
-                            <form id="logout-form" class="d-none" action="{{ route('logout') }}" method="POST">
-                                @csrf
-                            </form>
-                        </li>
-
                     </ul>
                 </nav>
             </div>
@@ -284,6 +274,7 @@
     </script>
 
     @vite(['resources/js/app.js'])
+    <!-- @vite(['resources/js/daterangepicker/daterangepicker.js']) -->
 
     @stack('scripts')
 

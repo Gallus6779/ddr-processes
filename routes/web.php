@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\Admin\ImportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ConsumptionController;
@@ -21,6 +22,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
         Route::resource('users', UserController::class);
+        Route::resource('sales', SalesController::class);
         Route::get('/imports', [ImportController::class, 'index'])->name('imports.index');
         Route::post('/imports', [ImportController::class, 'store'])->name('imports.store');
         Route::post('/imports/customers', [ImportController::class, 'storeCustomers'])->name('imports.customers.store');
