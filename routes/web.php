@@ -29,11 +29,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/consumptions', [ConsumptionController::class, 'index'])->name('consumptions.index');
         Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
         Route::get('/activities/{id}', [ActivityController::class, 'show'])->name('activities.show');
-        Route::delete('/activities/{id}', [ActivityController::class, 'destroy'])->name('activities.destroy');
         Route::post('/activities/clear', [ActivityController::class, 'clear'])->name('activities.clear');
     });
-
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
 
@@ -67,11 +64,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/districts', [SettingController::class, 'districts_create'])->name('districts.create');
         Route::put('/districts/{id}', [SettingController::class, 'districts_update'])->name('districts.update');
         Route::resource('roles', RoleController::class)->except(['show']);
-        Route::resource('permissions', PermissionController::class)->except(['show']);
 
         // Route::get('/consumptions', [CustomerController::class, 'consumptions'])->name('consumptions');
     });
-
 });
 
 require __DIR__ . '/auth.php';

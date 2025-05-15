@@ -19,7 +19,6 @@ class SettingController extends Controller
     public function station_read(Request $request){
 
         $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-
         // Validate permission
         try {
             validate_permission('settings.stations.read');
@@ -92,7 +91,6 @@ class SettingController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
-
         $validatedData = $request->validate([
             'name' => ['required',  Rule::unique('stations')->ignore($station->id)],
             'district_id' => ['required'],
@@ -138,7 +136,6 @@ class SettingController extends Controller
     // public function discount_read(Request $request){
 
     //     $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-
     //     // Validate permission
     //     try {
     //         validate_permission('discounts.read');
@@ -172,14 +169,12 @@ class SettingController extends Controller
     //     } catch (\Exception $e) {
     //         return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
     //     }
-
     //     // Fetch districts with related models
     //     // try {
     //         // dd(1);
     //         $discount_periods = DiscountPeriod::latest()->with('createdBy', 'validatedBy')->paginate(10);
     //         // dd(1);
     //         $districts = District::get();
-
     //         return view('admin.discounts.periods', compact('discount_periods', 'districts', 'user'));
     //     // } catch (\Exception $e) {
     //     //     return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
@@ -252,7 +247,6 @@ class SettingController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
-
         $validatedData = $request->validate([
             'name' => 'required|unique:discount_periods',
             'district_id' => [
@@ -371,7 +365,6 @@ class SettingController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
         }
-
         $validatedData = $request->validate([
             'name' => ['required',  Rule::unique('districts')->ignore($district->id)],
             'acronym' => ['required', Rule::unique('districts')->ignore($district->id)],

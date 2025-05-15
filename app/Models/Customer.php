@@ -29,7 +29,6 @@ class Customer extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['firstname', 'lastname', 'email', 'phone', 'customer_type_id'])
-            ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->useLogName('customer');
     }
@@ -40,8 +39,6 @@ class Customer extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function customer_type(): HasOne
-    {
-        return $this->hasOne(CustomerType::class);
     }
 
     /**

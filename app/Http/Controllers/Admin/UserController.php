@@ -165,7 +165,7 @@ class UserController extends Controller
     {
         validate_permission('users.delete');
 
-        // Journalisation avant la suppression
+        // Logging before deletion
         activity()
             ->causedBy(auth()->user())
             ->performedOn($user)
@@ -174,7 +174,7 @@ class UserController extends Controller
                 'email' => $user->email,
                 'roles' => $user->roles->pluck('id')->toArray()
             ])
-            ->log('Suppression d\'un utilisateur');
+            ->log('User deletion');
 
         $user->delete();
         return redirect()

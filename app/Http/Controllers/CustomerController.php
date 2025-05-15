@@ -16,35 +16,36 @@ class CustomerController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    // public function index(Request $request): View | JsonResponse
     {
-        // validate_permission('discounts.discounts.read');
-
-        // return view('admin.customers.discounts');
+        return view('admin.customers.index');
     }
 
     /**
-     *
+     * Display discounts.
      */
-    public function discount_read(Request $request){
+    public function discount_read(Request $request)
+    {
+        $user = $request->user();
 
-        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-
-        // Validate permission
+        // Validate permissions
         try {
             validate_permission('customers.read');
-            validate_permission('discounts.discounts.read');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'You do not have permission to view districts.']);
+            return redirect()->back()->withErrors(['error' => 'You do not have permission to view customers.']);
         }
 
-        // Fetch districts with related models
+        try {
+            validate_permission('discounts.discounts.read');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'You do not have permission to view discounts.']);
+        }
+
+        // Fetch data
         try {
             $discounts = Discount::latest()->with('createdBy', 'validatedBy')->paginate(10);
             $discount_periods = DiscountPeriod::get();
             $districts = District::get();
 
-            // Journaliser la consultation des remises
             activity()
                 ->causedBy($request->user())
                 ->withProperties(['count' => $discounts->total()])
@@ -53,33 +54,22 @@ class CustomerController extends Controller
             return view('admin.discounts.index', compact('discounts', 'discount_periods', 'districts', 'user'));
         } catch (\Exception $e) {
             Log::error('Erreur lors de la récupération des remises: ' . $e->getMessage());
-            return redirect()->back()->withErrors(['error' => 'Error fetching districts from the database.']);
+            return redirect()->back()->withErrors(['error' => 'Error fetching discounts or related data from the database.']);
         }
     }
 
     /**
-     *
+     * Display consumptions.
      */
-    public function consumptions(Request $request){
+    public function consumptions(Request $request)
+    {
+        $user = $request->user();
 
-        $user = $request->user();  // chargement des parametres de l'utilisateur connecté dans la vue appelée
-
-        // Journaliser la consultation des consommations
         activity()
             ->causedBy($request->user())
             ->log('Consultation des consommations');
 
         return view('admin.discounts.consumptions', compact('user'));
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-
     }
 
     /**
@@ -87,7 +77,6 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        // Validation
         $validated = $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -96,10 +85,8 @@ class CustomerController extends Controller
             'customer_type_id' => 'required|exists:customer_types,id'
         ]);
 
-        // Création du client
         $customer = Customer::create($validated);
 
-        // Journalisation
         activity()
             ->causedBy($request->user())
             ->performedOn($customer)
@@ -114,27 +101,10 @@ class CustomerController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Customer $customer)
     {
-        // Validation
         $validated = $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -143,7 +113,6 @@ class CustomerController extends Controller
             'customer_type_id' => 'required|exists:customer_types,id'
         ]);
 
-        // Sauvegarder les anciennes valeurs pour le log
         $oldValues = [
             'firstname' => $customer->firstname,
             'lastname' => $customer->lastname,
@@ -152,22 +121,14 @@ class CustomerController extends Controller
             'customer_type_id' => $customer->customer_type_id
         ];
 
-        // Mise à jour
         $customer->update($validated);
 
-        // Journalisation
         activity()
             ->causedBy($request->user())
             ->performedOn($customer)
             ->withProperties([
                 'old_values' => $oldValues,
-                'new_values' => [
-                    'firstname' => $customer->firstname,
-                    'lastname' => $customer->lastname,
-                    'email' => $customer->email,
-                    'phone' => $customer->phone,
-                    'customer_type_id' => $customer->customer_type_id
-                ]
+                'new_values' => $validated
             ])
             ->log('Mise à jour d\'un client');
 
@@ -180,7 +141,6 @@ class CustomerController extends Controller
     public function destroy(Customer $customer)
     {
         try {
-            // Journaliser avant la suppression
             activity()
                 ->causedBy(auth()->user())
                 ->performedOn($customer)
@@ -194,7 +154,7 @@ class CustomerController extends Controller
             return redirect()->back()->with('success', 'Client supprimé avec succès');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la suppression du client: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Impossible de supprimer ce client');
+            return redirect()->back()->with('error', 'Impossible de supprimer ce client : ' . $e->getMessage());
         }
     }
 }

@@ -29,6 +29,9 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    // Routes to fix
+    Route::get('profil', [PasswordController::class, 'edit'])->name('profile.index');
+    Route::put('profil', [PasswordController::class, 'update'])->name('settings.permissions.index');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
